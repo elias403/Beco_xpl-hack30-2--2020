@@ -1,5 +1,5 @@
 
-#__--VM--__	<br/>
+__--VM--__	<br/>
 desafio 1 - https://www.vulnhub.com/entry/hacker-fest-2019,378/ <br/>
 desafio 2 - https://pentesterlab.com/exercises/s2-052/course	<br/>
 desafio 3 - https://www.vulnhub.com/entry/droopy-v02,143/	<br/>
@@ -13,7 +13,7 @@ Desafio 10 - https://www.vulnhub.com/entry/the-ether-evilscience-v101,212/	<br/>
 Desafio 11 - https://vulnhub.com/entry/goldeneye-1,240/	<br/>
 Desafio 12 - https://www.vulnhub.com/entry/digitalworldlocal-mercy-v2,263/	<br/>
 Desafio 13 - 
-<br/>#**--VM--**
+<br/>**--VM--**
 	
 	
 <h3>**Dia 1 - desafio 2(1° desafio)     7/9/2020**</h3>
@@ -35,7 +35,7 @@ Desafio 13 -
 
 
 
-<h3>__#Dia 2 - desafio 2(° 2desafio)			8/9/2020__</h3>
+<h3>__Dia 2 - desafio 2(° 2desafio)			8/9/2020__</h3>
 	
 	*Pesquisa sobre “trust” -> vulnerabilidade conhecida -> exploit encontrado: Apache Struts 2.5 < 2.5.12 - REST Plugin XStream Remote Code Execution
 	
@@ -46,7 +46,7 @@ Desafio 13 -
 
 
 
-<h3>__#Dia 3 			9/9/2020__</h3>
+<h3>__Dia 3 			9/9/2020__</h3>
 	
 	*Varredura do alvo
 		indetificação vulnerabilidade 
@@ -70,7 +70,7 @@ Desafio 13 -
 			
 			
 			
-<h3>__#Dia 4 			10/9/2020__</h3>
+<h3>__Dia 4 			10/9/2020__</h3>
 
 	*Varredra da máquina
 	
@@ -111,7 +111,7 @@ Desafio 13 -
 
 
 
-<h3>__#Dia 5 			11/9/2020__</h3>
+<h3>__Dia 5 			11/9/2020__</h3>
 
 	*Scan básico
 		-sV -Pn  ip_alvo
@@ -150,7 +150,7 @@ Desafio 13 -
 				
 
 
-<h3>__#Dia 6 			12/9/2020__</h3>
+<h3>__Dia 6 			12/9/2020__</h3>
 
 	*scan
 	
@@ -166,7 +166,7 @@ Desafio 13 -
 		
 	*ssh
 
-<h3>__#Dia 7 			13/9/2020__</h3>
+<h3>__Dia 7 			13/9/2020__</h3>
 
 	*scan alvo
 	
@@ -201,7 +201,7 @@ Desafio 13 -
 			root pois está no mesmo grupo
 			
 
-<h3>__#Dia 8 			14/9/2020__</h3>
+<h3>__Dia 8 			14/9/2020__</h3>
 
 	*scan padrão
 	
@@ -224,7 +224,7 @@ Desafio 13 -
 				.
 				w /etc/passwd
 
-<h3>__#Dia 9 			15/9/2020__</h3>
+<h3>__Dia 9 			15/9/2020__</h3>
 	
 	*scan
 	
@@ -247,7 +247,7 @@ Desafio 13 -
 					/usr/bin/find -exec  "/bin/bash" \;
 
 
-<h3>__#Dia 10			16/9/2020__</h3>
+<h3>__Dia 10			16/9/2020__</h3>
 
 	*burp suite
 	repeater -> index.php?file=about.php
@@ -280,7 +280,7 @@ Desafio 13 -
 		
 		
 
-<h3>__#Dia 11 			17/9/2020__</h3>
+<h3>__Dia 11 			17/9/2020__</h3>
 
 	*scan padrão
 		porta 80
