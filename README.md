@@ -16,7 +16,7 @@ Desafio 13 -
 <br/>**--VM--**
 	
 	
-<h3>**Dia 1 - desafio 2(1° desafio)     7/9/2020**</h3>
+<h3>Dia 1 - desafio 2(1° desafio)     7/9/2020</h3>
 
        *scan com nmap        
         *identificação do wordpress -> wpscan -> pesquisar por exploit dos plugins -> wp_google
@@ -35,7 +35,7 @@ Desafio 13 -
 
 
 
-<h3>__Dia 2 - desafio 2(° 2desafio)			8/9/2020__</h3>
+<h3>Dia 2 - desafio 2(° 2desafio)			8/9/2020</h3>
 	
 	*Pesquisa sobre “trust” -> vulnerabilidade conhecida -> exploit encontrado: Apache Struts 2.5 < 2.5.12 - REST Plugin XStream Remote Code Execution
 	
@@ -46,7 +46,7 @@ Desafio 13 -
 
 
 
-<h3>__Dia 3 			9/9/2020__</h3>
+<h3>Dia 3 			9/9/2020</h3>
 	
 	*Varredura do alvo
 		indetificação vulnerabilidade 
@@ -70,7 +70,7 @@ Desafio 13 -
 			
 			
 			
-<h3>__Dia 4 			10/9/2020__</h3>
+<h3>Dia 4 			10/9/2020</h3>
 
 	*Varredra da máquina
 	
@@ -111,7 +111,7 @@ Desafio 13 -
 
 
 
-<h3>__Dia 5 			11/9/2020__</h3>
+<h3>Dia 5 			11/9/2020</h3>
 
 	*Scan básico
 		-sV -Pn  ip_alvo
@@ -150,7 +150,7 @@ Desafio 13 -
 				
 
 
-<h3>__Dia 6 			12/9/2020__</h3>
+<h3>Dia 6 			12/9/2020</h3>
 
 	*scan
 	
@@ -166,7 +166,7 @@ Desafio 13 -
 		
 	*ssh
 
-<h3>__Dia 7 			13/9/2020__</h3>
+<h3>Dia 7 			13/9/2020</h3>
 
 	*scan alvo
 	
@@ -201,7 +201,7 @@ Desafio 13 -
 			root pois está no mesmo grupo
 			
 
-<h3>__Dia 8 			14/9/2020__</h3>
+<h3>Dia 8 			14/9/2020</h3>
 
 	*scan padrão
 	
@@ -224,7 +224,7 @@ Desafio 13 -
 				.
 				w /etc/passwd
 
-<h3>__Dia 9 			15/9/2020__</h3>
+<h3>Dia 9 			15/9/2020</h3>
 	
 	*scan
 	
@@ -247,7 +247,7 @@ Desafio 13 -
 					/usr/bin/find -exec  "/bin/bash" \;
 
 
-<h3>__Dia 10			16/9/2020__</h3>
+<h3>Dia 10			16/9/2020</h3>
 
 	*burp suite
 	repeater -> index.php?file=about.php
@@ -280,7 +280,7 @@ Desafio 13 -
 		
 		
 
-<h3>__Dia 11 			17/9/2020__</h3>
+<h3>Dia 11 			17/9/2020</h3>
 
 	*scan padrão
 		porta 80
@@ -390,7 +390,7 @@ Desafio 13 -
 						
 
 
-<h3>__Dia 12 			18/9/2020__</h3>
+<h3>Dia 12 			18/9/2020</h3>
 
 	*scan default
 	
