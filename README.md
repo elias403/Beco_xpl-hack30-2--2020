@@ -658,7 +658,7 @@ Desafio 17 - </br>
 					python get-pip.py
 					
 				pip install requests 
-								nome do pacote que não foi encontrado, no meu caso foi o requests
+					    nome do pacote que não foi encontrado, no meu caso foi o requests
 	
 		python -c 'import pty;pty.spawn("/bin/sh")'
 		sudo -l
