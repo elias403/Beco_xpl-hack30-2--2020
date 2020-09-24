@@ -20,9 +20,9 @@ Desafio 17 - Manual Webmin 1.920 exploit | CVE-2019-15107 | Crontab - https://ww
 Desafio 18 - CWE-521 | Tomcat7 bad .jsp | CWE-732 crontab  	    - https://www.vulnhub.com/entry/typhoon-102,267/ </br>
 Desafio 19 -  - https://www.vulnhub.com/entry/prime-1,358/</br>
 Desafio 20 - - </br>
+<br/>**--VM--**
 
 <br> <h2>[Write-up vídeo](https://www.youtube.com/channel/UCnWSqlqL8D365ps5IECrPyg) </h2></br>
-<br/>**--VM--**
 	
 	
 <h3>Dia 1 - desafio 2(1° desafio)     7/9/2020</h3>
