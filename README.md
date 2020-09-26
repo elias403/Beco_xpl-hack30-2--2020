@@ -19,8 +19,9 @@ Desafio 16 - https://www.vulnhub.com/entry/symfonos-31,332/</br>
 Desafio 17 - Manual Webmin 1.920 exploit | CVE-2019-15107 | Crontab - https://www.vulnhub.com/entry/nezuko-1,352/ </br>
 Desafio 18 - CWE-521 | Tomcat7 bad .jsp | CWE-732 crontab  	    - https://www.vulnhub.com/entry/typhoon-102,267/ </br>
 Desafio 19 - Parameter Fuzzing | Password Spray | CVE-2017-16995 - https://www.vulnhub.com/entry/prime-1,358/</br>
-Desafio 20 -  -https://www.vulnhub.com/entry/sumo-1,480/ </br>
-Desafio 21 - - </br>
+Desafio 20 - IDT 'perf_swevent_init' Local Privilege Escalation - https://www.vulnhub.com/entry/sumo-1,480/ </br>
+Desafio 21 - - https://www.vulnhub.com/entry/election-1,503/ </br>
+Desafio 22 - - </br>
 <br/>**--VM--**
 
 <br> <h2>[Write-up vídeo](https://www.youtube.com/channel/UCnWSqlqL8D365ps5IECrPyg) </h2></br>
