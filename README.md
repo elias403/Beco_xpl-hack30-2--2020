@@ -23,7 +23,8 @@ Desafio 20 - IDT 'perf_swevent_init' Local Privilege Escalation - https://www.vu
 Desafio 21 - Solar Winds Serv-U - CVE-2019-12181 | SQLI into dumpfile - https://www.vulnhub.com/entry/election-1,503/ </br>
 Desafio 22 - Fake GoogleBot | LFI | Misconfiguration | $PATH abuse - https://www.vulnhub.com/entry/inclusiveness-1,422/</br>
 Desafio 23 - RCE sar2HTML | crontab abuse  - https://www.vulnhub.com/entry/sar-1,425/ </br>
-Desafio 24 - - https://www.vulnhub.com/entry/zico2-1,210/</br>
+Desafio 24 - PHP LiteAdmin 1.9.3 exploit | sudo tar/zip abuse -  https://www.vulnhub.com/entry/zico2-1,210/</br>
+Desafio 25 - - </br>
 <br/>**--VM--**
 
 <br> <h2>[Write-up vídeo](https://www.youtube.com/channel/UCnWSqlqL8D365ps5IECrPyg) </h2></br>
