@@ -25,7 +25,8 @@ Desafio 22 - Fake GoogleBot | LFI | Misconfiguration | $PATH abuse - https://www
 Desafio 23 - RCE sar2HTML | crontab abuse  - https://www.vulnhub.com/entry/sar-1,425/ </br>
 Desafio 24 - PHP LiteAdmin 1.9.3 exploit | sudo tar/zip abuse -  https://www.vulnhub.com/entry/zico2-1,210/</br>
 Desafio 25 - Feat V1N1V131R4 | Koken CMS 0.22.24 | Bypass Upload JPG - https://www.vulnhub.com/entry/photographer-1,519/ </br>
-Desafio 26 - - https://www.vulnhub.com/entry/tempus-fugit-1,346/ </br>
+Desafio 26 - RCE to DMZ machine | Pivoting with NC | DNS zone transfer | MDNS poisoning - https://www.vulnhub.com/entry/tempus-fugit-1,346/ </br>
+Desafio 27 - - </br>
 <br/>**--VM--**
 
 <br> <h2>[Write-up vídeo](https://www.youtube.com/channel/UCnWSqlqL8D365ps5IECrPyg) </h2></br>
