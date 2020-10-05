@@ -28,7 +28,7 @@ Desafio 25 - Feat V1N1V131R4 | Koken CMS 0.22.24 | Bypass Upload JPG - https://w
 Desafio 26 - RCE to DMZ machine | Pivoting with NC | DNS zone transfer | MDNS poisoning - https://www.vulnhub.com/entry/tempus-fugit-1,346/ </br>
 Desafio 27 - Buffer Overflow INTRO - https://www.vulnhub.com/entry/covfefe-1,199/ </br>
 Desafio 28 - XXE server-side request forgery | BoF Ret2Libc // Buffer Overglow Ret2Libc Exploit development - https://www.vulnhub.com/entry/jigsaw-1,310/</br>
-Desafio 29 - - https://www.vulnhub.com/entry/pegasus-1,109/ </br>
+Desafio 29 - Format String Attack | Exploit Development - https://www.vulnhub.com/entry/pegasus-1,109/ </br>
 Desafio 30 - - https://www.vulnhub.com/entry/brainpan-1,51/</br>
 <br/>**--VM--**
 
